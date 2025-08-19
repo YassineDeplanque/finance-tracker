@@ -4,21 +4,24 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const connection = async () => {
-    try{
-        const connection = await mysql.createConnection({
+    const connection = await mysql.createConnection({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
         database: process.env.DB_NAME,
-        });
+    });
 
-        console.log('Connexion réussie !');
-
-        await connection.end();
+    try {
+        const [result] = await connection.query(
+            'SELECT * FROM `income`'
+        );
+        console.log(result);
     } catch (err) {
-        console.error('Erreur de connexion :', err);
+    console.log(err);
     }
-}
 
+    return connection;
+
+}
 
 connection();
