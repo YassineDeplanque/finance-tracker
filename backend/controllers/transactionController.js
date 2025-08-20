@@ -76,3 +76,20 @@ export const deleteIncome = async (req, res) => {
         res.status(500).json({sucess: false, message: "Servor error"})
     }
 }
+
+export const deleteExpenses = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const db = await connection();
+        const query = 'DELETE FROM expenses WHERE id = ?';
+        const [result] = await db.execute(query, [id]);
+
+        res.status(201).json({
+            sucess: true,
+            message: "expenses deleted"
+        })
+    } catch (err) {
+        console.error("Error deleting expenses : ", err);
+        res.status(500).json({sucess: false, message: "Servor error"})
+    }
+}
