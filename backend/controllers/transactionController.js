@@ -33,7 +33,10 @@ export const insertIncome = async (req, res) => {
         const query = 'INSERT INTO income (amount, source) VALUES (?, ?)';
         const [result] = await db.execute(query, [amount, source]);
 
-        res.status(201).json(result)
+        res.status(201).json({
+            sucess: true,
+            message: "income added"
+        })
     } catch (err) {
         console.error("Error inserting income : ", err);
         res.status(500).json({sucess: false, message: "Servor error"})
@@ -47,9 +50,29 @@ export const insertExpenses = async (req, res) => {
         const query = 'INSERT INTO expenses (amount, category) VALUES (?, ?)';
         const [result] = await db.execute(query, [amount, category]);
 
-        res.status(201).json(result)
+        res.status(201).json({
+            sucess: true,
+            message: "expenses added"
+        })
     } catch (err) {
         console.error("Error inserting expenses : ", err);
+        res.status(500).json({sucess: false, message: "Servor error"})
+    }
+}
+
+export const deleteIncome = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const db = await connection();
+        const query = 'DELETE FROM income WHERE id = ?';
+        const [result] = await db.execute(query, [id]);
+
+        res.status(201).json({
+            sucess: true,
+            message: "income deleted"
+        })
+    } catch (err) {
+        console.error("Error deleting income : ", err);
         res.status(500).json({sucess: false, message: "Servor error"})
     }
 }
