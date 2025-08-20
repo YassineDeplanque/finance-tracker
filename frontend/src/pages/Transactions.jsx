@@ -69,12 +69,23 @@ function Transactions () {
         })
     }
 
+    const handleDeleteIncome = (id) => {
+      axios.delete(`http://localhost:3000/transaction/income/${id}`)
+        .then((res) => {
+          setIncome(income.filter(i => i.id !== id))
+        })
+        .catch((err) => {
+        setError(err.message)
+      })
+
+    }
+
     return(
         <div>
             <h1>Incomes</h1>
             <ul>
                 {income.map((i)  => (
-                    <li key={i.id}>Income : {i.amount}, Source : {i.source}</li>
+                    <li key={i.id}>Income : {i.amount}, Source : {i.source} <button onClick={() => handleDeleteIncome(i.id)}>Delete</button></li>
                 ))}
             </ul>
             <h1>Expenses</h1>
