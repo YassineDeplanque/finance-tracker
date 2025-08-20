@@ -28,6 +28,9 @@ export const getExpenses = async (req, res) => {
 
 export const insertIncome = async (req, res) => {
     const { amount, source } = req.body;
+    if(!amount || !source){
+        return res.status(400).json({ success: false, message: "Amount and source required." });
+    }
     try {
         const db = await connection();
         const query = 'INSERT INTO income (amount, source) VALUES (?, ?)';
@@ -93,6 +96,27 @@ export const deleteExpenses = async (req, res) => {
         })
     } catch (err) {
         console.error("Error deleting expenses : ", err);
+        res.status(500).json({sucess: false, message: "Servor error"})
+    }
+}
+
+export const editIncome = async (req, res) => {
+    const { id } = req.params;
+    const { amount, source } = req.body;
+    if(!amount || !source){
+        return res.status(400).json({ success: false, message: "Amount and source required." });
+    }
+    try {
+        const db = await connection();
+        const query = 'UPDATE income SET amount = ?, source = ? WHERE id = ?';
+        const [result] = await db.execute(query, [amount, source, id]);
+
+        res.status(201).json({
+            sucess: true,
+            message: "income edited"
+        })
+    } catch (err) {
+        console.error("Error editing income : ", err);
         res.status(500).json({sucess: false, message: "Servor error"})
     }
 }
