@@ -9,25 +9,50 @@ function Transactions () {
     const [expensesAmount, setExpensesAmount] = useState(0);
     const [error, setError] = useState('');
 
+    const [incomeAmountAdd, setIncomeAmountAdd] = useState('');
+    const [incomeSourceAdd, setIncomeSourceAdd] = useState('');
+
+    const fetchIncome = () => {
+      axios.get('http://localhost:3000/transaction/income')
+        .then((res) => {
+          setIncome(res.data);
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    };
+
+    const fetchExpenses = () => {
+      axios.get('http://localhost:3000/transaction/expenses')
+        .then((res) => {
+          setExpenses(res.data);
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    };
+
+
     useEffect(() => {
-        axios.get('http://localhost:3000/transaction/income')
-          .then((res) => {
-            setIncome(res.data);
-          })
-          .catch((err) => {
-            setError(err.message)
-          })
+        fetchIncome();
     }, [])
 
     useEffect(() => {
-        axios.get('http://localhost:3000/transaction/expenses')
-          .then((res) => {
-            setExpenses(res.data);
-          })
-          .catch((err) => {
-            setError(err.message)
-          })
+        fetchExpenses();
     }, [])
+
+    const handleSubmitIncome = () => {
+      const newIncome = {amount: incomeAmountAdd, source: incomeSourceAdd}
+      axios.post("http://localhost:3000/transaction/income", newIncome)
+        .then(res => {
+          fetchIncome();
+          setIncomeAmountAdd('');
+          setIncomeSourceAdd('');
+        })
+        .catch((err) => {
+          setError(err.message)
+        })
+    }
 
     return(
         <div>
@@ -43,6 +68,10 @@ function Transactions () {
                     <li key={ex.id}>Income : {ex.amount}, Source : {ex.category}</li>
                 ))}
             </ul>
+            <h1>Insert incomes</h1>
+            <input placeholder='Amount' value={incomeAmountAdd} onChange={(e) => setIncomeAmountAdd(e.target.value)} />
+            <input placeholder='Source' value={incomeSourceAdd} onChange={(e) => setIncomeSourceAdd(e.target.value)} />
+            <button onClick={handleSubmitIncome}>Add</button>
         </div>
     )
 }
