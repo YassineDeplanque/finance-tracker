@@ -45,6 +45,9 @@ export const insertIncome = async (req, res) => {
 
 export const insertExpenses = async (req, res) => {
     const { amount, category } = req.body;
+    if(!amount || !category){
+        return res.status(400).json({ success: false, message: "Amount and category required." });
+    }
     try {
         const db = await connection();
         const query = 'INSERT INTO expenses (amount, category) VALUES (?, ?)';

@@ -112,7 +112,7 @@ function Transactions () {
             <h1>Insert expenses</h1>
             <input placeholder='Amount' value={expensesAmountAdd} onChange={(e) => setExpensesAmountAdd(e.target.value)} />
             <select value={expensesCategoryAdd} onChange={(e) => setExpensesCategopryAdd(e.target.value)}>
-              <option value="">-- Choisir une catégorie --</option>
+              <option value="">-- Choose a category --</option>
                {categories.map((c) => (
               <option key={c} value={c}>{c}</option>
                ))}
