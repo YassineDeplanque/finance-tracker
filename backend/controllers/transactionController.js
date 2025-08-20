@@ -120,3 +120,24 @@ export const editIncome = async (req, res) => {
         res.status(500).json({sucess: false, message: "Servor error"})
     }
 }
+
+export const editExpenses = async (req, res) => {
+    const { id } = req.params;
+    const { amount, category } = req.body;
+    if(!amount || !category){
+        return res.status(400).json({ success: false, message: "Amount and category required." });
+    }
+    try {
+        const db = await connection();
+        const query = 'UPDATE expenses SET amount = ?, category = ? WHERE id = ?';
+        const [result] = await db.execute(query, [amount, category, id]);
+
+        res.status(201).json({
+            sucess: true,
+            message: "expenses edited"
+        })
+    } catch (err) {
+        console.error("Error editing expenses : ", err);
+        res.status(500).json({sucess: false, message: "Servor error"})
+    }
+}

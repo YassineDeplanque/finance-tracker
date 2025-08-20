@@ -1,5 +1,5 @@
 import express from 'express';
-import { getIncome, getExpenses, insertIncome, insertExpenses, deleteIncome, deleteExpenses, editIncome } from '../controllers/transactionController.js';
+import { getIncome, getExpenses, insertIncome, insertExpenses, deleteIncome, deleteExpenses, editIncome, editExpenses } from '../controllers/transactionController.js';
 
 const router = express.Router();
 
@@ -10,5 +10,6 @@ router.post('/expenses', insertExpenses)
 router.delete('/income/:id', deleteIncome)
 router.delete('/expenses/:id', deleteExpenses)
 router.put('/income/:id', editIncome)
+router.put('/expenses/:id', editExpenses)
 
 export default router;
