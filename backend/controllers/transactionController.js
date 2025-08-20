@@ -39,3 +39,17 @@ export const insertIncome = async (req, res) => {
         res.status(500).json({sucess: false, message: "Servor error"})
     }
 }
+
+export const insertExpenses = async (req, res) => {
+    const { amount, category } = req.body;
+    try {
+        const db = await connection();
+        const query = 'INSERT INTO expenses (amount, category) VALUES (?, ?)';
+        const [result] = await db.execute(query, [amount, category]);
+
+        res.status(201).json(result)
+    } catch (err) {
+        console.error("Error inserting expenses : ", err);
+        res.status(500).json({sucess: false, message: "Servor error"})
+    }
+}
