@@ -14,6 +14,8 @@ function Transactions () {
     const [expensesAmountAdd, setExpensesAmountAdd] = useState('');
     const [expensesCategoryAdd, setExpensesCategopryAdd] = useState('');
 
+    const categories = ["Food", "Transport", "Rent", "Entertainment", "Other"];
+
     const fetchIncome = () => {
       axios.get('http://localhost:3000/transaction/income')
         .then((res) => {
@@ -109,7 +111,12 @@ function Transactions () {
             <button onClick={handleSubmitIncome}>Add</button>
             <h1>Insert expenses</h1>
             <input placeholder='Amount' value={expensesAmountAdd} onChange={(e) => setExpensesAmountAdd(e.target.value)} />
-            <input placeholder='Category' value={expensesCategoryAdd} onChange={(e) => setExpensesCategopryAdd(e.target.value)} />
+            <select value={expensesCategoryAdd} onChange={(e) => setExpensesCategopryAdd(e.target.value)}>
+              <option value="">-- Choisir une catégorie --</option>
+               {categories.map((c) => (
+              <option key={c} value={c}>{c}</option>
+               ))}
+            </select>
             <button onClick={handleSubmitExpenses}>Add</button>
         </div>
     )
