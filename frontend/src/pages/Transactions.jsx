@@ -107,9 +107,9 @@ function Transactions() {
     setEditingIncomeAmount(incomes.amount);
     setEditingIncomeSource(incomes.source);
     const d = new Date(incomes.date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0'); // mois de 0 à 11
-  const day = String(d.getDate()).padStart(2, '0');
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
 
   setEditingIncomeDate(`${year}-${month}-${day}`);
   }
@@ -198,7 +198,7 @@ function Transactions() {
             key={ex.id}
             className="flex justify-between items-center bg-white shadow-md rounded-lg p-3 border border-gray-200"
           >
-            <span className="text-gray-700">💸 {ex.amount} € — {ex.category}</span>
+            <span className="text-gray-700">💸 {ex.amount} € — {ex.category} — {new Date(ex.date).toLocaleDateString()}</span>
             {editingExpensesId === ex.id ? (
               <>
                 <input  className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingExpensesAmount} onChange={(e) => setEditingExpensesAmount(e.target.value)}></input>
