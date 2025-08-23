@@ -24,6 +24,7 @@ function Transactions() {
   const [editingExpensesId, setEditingExpensesId] = useState(null);
   const [editingExpensesAmount, setEditingExpensesAmount] = useState('');
   const [editingExpensesCategory, setEditingExpensesCategory] = useState('');
+  const [editingExpensesDate, setEditingExpensesDate] = useState('');
 
   const categories = ["Food", "Transport", "Rent", "Entertainment", "Other"];
 
@@ -132,10 +133,15 @@ function Transactions() {
     setEditingExpensesId(expense.id);
     setEditingExpensesAmount(expense.amount);
     setEditingExpensesCategory(expense.category);
+    const d = new Date(expense.date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    setEditingExpensesDate(`${year}-${month}-${day}`);
   }
 
   const handleEditExpenses = (id) => {
-    const editExpenses = { amount: editingExpensesAmount, category: editingExpensesCategory}
+    const editExpenses = { amount: editingExpensesAmount, category: editingExpensesCategory, date: editingExpensesDate}
     axios.put(`http://localhost:3000/transaction/expenses/${id}`, editExpenses)
     .then((res) => {
         fetchExpenses();
@@ -214,6 +220,12 @@ function Transactions() {
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
+                <input 
+                  type='date'
+                  className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  value={editingExpensesDate  || ''}
+                  onChange={(e) => setEditingExpensesDate(e.target.value)}
+                />
                 <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm" onClick={() => handleEditExpenses(ex.id)}>Save</button>
                 <button className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm" onClick={() => setEditingExpensesId(null)}>Cancel</button>
               </>
