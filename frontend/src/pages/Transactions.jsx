@@ -14,6 +14,7 @@ function Transactions() {
   const [incomeDateAdd, setIncomeDateAdd] = useState('');
   const [expensesAmountAdd, setExpensesAmountAdd] = useState('');
   const [expensesCategoryAdd, setExpensesCategopryAdd] = useState('');
+  const [expensesDateAdd, setExpensesDateAdd] = useState('');
 
   const [editingIncomeId, setEditingIncomeId] = useState(null);
   const [editingIncomeAmount, setEditingIncomeAmount] = useState('');
@@ -70,12 +71,13 @@ function Transactions() {
   }
 
   const handleSubmitExpenses = () => {
-    const newExpenses = { amount: expensesAmountAdd, category: expensesCategoryAdd }
+    const newExpenses = { amount: expensesAmountAdd, category: expensesCategoryAdd, date: expensesDateAdd }
     axios.post("http://localhost:3000/transaction/expenses", newExpenses)
       .then(res => {
         fetchExpenses();
         setExpensesAmountAdd('');
         setExpensesCategopryAdd('');
+        setExpensesDateAdd('');
       })
       .catch((err) => {
         setError(err.message)
@@ -285,6 +287,12 @@ function Transactions() {
             <option key={c} value={c}>{c}</option>
           ))}
         </select>
+        <input 
+        type='date'
+        className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        value={expensesDateAdd}
+        onChange={(e) => setExpensesDateAdd(e.target.value)}
+        />
         <button
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
           onClick={handleSubmitExpenses}
