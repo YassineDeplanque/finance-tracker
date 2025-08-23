@@ -106,7 +106,12 @@ function Transactions() {
     setEditingIncomeId(incomes.id);
     setEditingIncomeAmount(incomes.amount);
     setEditingIncomeSource(incomes.source);
-    //setEditingIncomeDate(incomes.date);
+    const d = new Date(incomes.date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0'); // mois de 0 à 11
+  const day = String(d.getDate()).padStart(2, '0');
+
+  setEditingIncomeDate(`${year}-${month}-${day}`);
   }
 
   const handleEditIncome = (id) => {
@@ -155,12 +160,12 @@ function Transactions() {
               <>
                 <input className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingIncomeAmount} onChange={(e) => setEditingIncomeAmount(e.target.value)}></input>
                 <input  className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingIncomeSource} onChange={(e) => setEditingIncomeSource(e.target.value)}></input>
-                {/* <input 
+                <input 
                   type='date'
                   className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   value={editingIncomeDate  || ''}
                   onChange={(e) => setEditingIncomeDate(e.target.value)}
-                /> */}
+                />
                 <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm" onClick={() => handleEditIncome(i.id)}>Save</button>
                 <button className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm" onClick={() => setEditingIncomeId(null)}>Cancel</button>
               </>
