@@ -14,6 +14,10 @@ function Transactions () {
     const [expensesAmountAdd, setExpensesAmountAdd] = useState('');
     const [expensesCategoryAdd, setExpensesCategopryAdd] = useState('');
 
+    const [editingIncomeId, setEditingIncomeId] = useState(null);
+    const [editingIncomeAmount, setEditingIncomeAmount] = useState('');
+    const [editingIncomeSource, setEditingIncomeSource] = useState('');
+
     const categories = ["Food", "Transport", "Rent", "Entertainment", "Other"];
 
     const fetchIncome = () => {
@@ -91,6 +95,26 @@ function Transactions () {
       })
     }
 
+    const startEditing = (incomes) => {
+      setEditingIncomeId(incomes.id);
+      setEditingIncomeAmount(incomes.amount);
+      setEditingIncomeSource(incomes.source);
+      console.log(editingIncomeAmount)
+      console.log(editingIncomeSource)
+    }
+
+    const handleEditIncome = (id) => {
+      const editIncome  = {amount: editingIncomeAmount, source: editingIncomeSource}
+      axios.put(`http://localhost:3000/transaction/income/${id}`, editIncome)
+        .then((res) => {
+          fetchIncome();
+          setEditingIncomeId(null);
+        })
+        .catch((err) => {
+          setError(err.message);
+        })
+    }
+
     return (
   <div className="max-w-4xl mx-auto p-6">
     {/* Incomes */}
@@ -102,12 +126,30 @@ function Transactions () {
           className="flex justify-between items-center bg-white shadow-md rounded-lg p-3 border border-gray-200"
         >
           <span className="text-gray-700">💰 {i.amount} € — {i.source}</span>
+          {editingIncomeId === i.id ? (
+            <>
+            <input value={editingIncomeAmount} onChange={(e) => setEditingIncomeAmount(e.target.value)}></input>
+            <input value={editingIncomeSource}  onChange={(e) => setEditingIncomeSource(e.target.value)}></input>
+            <button onClick={() => handleEditIncome(i.id)}>Save</button>
+            <button onClick={() => setEditingIncomeId(null)}>Cancel</button>
+            </>
+          ) : (
+            <>
           <button 
             className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
             onClick={() => handleDeleteIncome(i.id)}
           >
             Delete
           </button>
+          <button
+           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+           onClick={() => startEditing(i)}
+           >
+            Edit
+          </button>
+          </>
+          )}
+
         </li>
       ))}
     </ul>
