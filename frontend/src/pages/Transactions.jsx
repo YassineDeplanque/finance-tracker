@@ -18,6 +18,7 @@ function Transactions() {
   const [editingIncomeId, setEditingIncomeId] = useState(null);
   const [editingIncomeAmount, setEditingIncomeAmount] = useState('');
   const [editingIncomeSource, setEditingIncomeSource] = useState('');
+  const [editingIncomeDate, setEditingIncomeDate] = useState('');
 
   const [editingExpensesId, setEditingExpensesId] = useState(null);
   const [editingExpensesAmount, setEditingExpensesAmount] = useState('');
@@ -105,10 +106,11 @@ function Transactions() {
     setEditingIncomeId(incomes.id);
     setEditingIncomeAmount(incomes.amount);
     setEditingIncomeSource(incomes.source);
+    //setEditingIncomeDate(incomes.date);
   }
 
   const handleEditIncome = (id) => {
-    const editIncome = { amount: editingIncomeAmount, source: editingIncomeSource }
+    const editIncome = { amount: editingIncomeAmount, source: editingIncomeSource, date: editingIncomeDate }
     axios.put(`http://localhost:3000/transaction/income/${id}`, editIncome)
       .then((res) => {
         fetchIncome();
@@ -153,6 +155,12 @@ function Transactions() {
               <>
                 <input className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingIncomeAmount} onChange={(e) => setEditingIncomeAmount(e.target.value)}></input>
                 <input  className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingIncomeSource} onChange={(e) => setEditingIncomeSource(e.target.value)}></input>
+                {/* <input 
+                  type='date'
+                  className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  value={editingIncomeDate  || ''}
+                  onChange={(e) => setEditingIncomeDate(e.target.value)}
+                /> */}
                 <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm" onClick={() => handleEditIncome(i.id)}>Save</button>
                 <button className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm" onClick={() => setEditingIncomeId(null)}>Cancel</button>
               </>
