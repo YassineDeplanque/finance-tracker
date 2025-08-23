@@ -123,14 +123,14 @@ export const editIncome = async (req, res) => {
 
 export const editExpenses = async (req, res) => {
     const { id } = req.params;
-    const { amount, category } = req.body;
-    if(!amount || !category){
-        return res.status(400).json({ success: false, message: "Amount and category required." });
+    const { amount, category, date } = req.body;
+    if(!amount || !category || !date){
+        return res.status(400).json({ success: false, message: "Amount and category and date required." });
     }
     try {
         const db = await connection();
-        const query = 'UPDATE expenses SET amount = ?, category = ? WHERE id = ?';
-        const [result] = await db.execute(query, [amount, category, id]);
+        const query = 'UPDATE expenses SET amount = ?, category = ?, date = ? WHERE id = ?';
+        const [result] = await db.execute(query, [amount, category, date, id]);
 
         res.status(201).json({
             sucess: true,
