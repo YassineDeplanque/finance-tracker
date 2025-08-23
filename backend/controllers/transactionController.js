@@ -47,14 +47,14 @@ export const insertIncome = async (req, res) => {
 }
 
 export const insertExpenses = async (req, res) => {
-    const { amount, category } = req.body;
-    if(!amount || !category){
-        return res.status(400).json({ success: false, message: "Amount and category required." });
+    const { amount, category, date } = req.body;
+    if(!amount || !category || !date){
+        return res.status(400).json({ success: false, message: "Amount and category and date required." });
     }
     try {
         const db = await connection();
-        const query = 'INSERT INTO expenses (amount, category) VALUES (?, ?)';
-        const [result] = await db.execute(query, [amount, category]);
+        const query = 'INSERT INTO expenses (amount, category, date) VALUES (?, ?, ?)';
+        const [result] = await db.execute(query, [amount, category, date]);
 
         res.status(201).json({
             sucess: true,
