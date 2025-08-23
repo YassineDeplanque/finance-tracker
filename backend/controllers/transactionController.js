@@ -27,14 +27,14 @@ export const getExpenses = async (req, res) => {
 }
 
 export const insertIncome = async (req, res) => {
-    const { amount, source } = req.body;
-    if(!amount || !source){
-        return res.status(400).json({ success: false, message: "Amount and source required." });
+    const { amount, source, date } = req.body;
+    if(!amount || !source || !date){
+        return res.status(400).json({ success: false, message: "Amount and source and date required." });
     }
     try {
         const db = await connection();
-        const query = 'INSERT INTO income (amount, source) VALUES (?, ?)';
-        const [result] = await db.execute(query, [amount, source]);
+        const query = 'INSERT INTO income (amount, source, date) VALUES (?, ?, ?)';
+        const [result] = await db.execute(query, [amount, source, date]);
 
         res.status(201).json({
             sucess: true,

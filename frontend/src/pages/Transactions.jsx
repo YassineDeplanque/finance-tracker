@@ -11,6 +11,7 @@ function Transactions() {
 
   const [incomeAmountAdd, setIncomeAmountAdd] = useState('');
   const [incomeSourceAdd, setIncomeSourceAdd] = useState('');
+  const [incomeDateAdd, setIncomeDateAdd] = useState('');
   const [expensesAmountAdd, setExpensesAmountAdd] = useState('');
   const [expensesCategoryAdd, setExpensesCategopryAdd] = useState('');
 
@@ -54,12 +55,13 @@ function Transactions() {
   }, [])
 
   const handleSubmitIncome = () => {
-    const newIncome = { amount: incomeAmountAdd, source: incomeSourceAdd }
+    const newIncome = { amount: incomeAmountAdd, source: incomeSourceAdd, date: incomeDateAdd }
     axios.post("http://localhost:3000/transaction/income", newIncome)
       .then(res => {
         fetchIncome();
         setIncomeAmountAdd('');
         setIncomeSourceAdd('');
+        setIncomeDateAdd('');
       })
       .catch((err) => {
         setError(err.message)
@@ -146,7 +148,7 @@ function Transactions() {
             key={i.id}
             className="flex justify-between items-center bg-white shadow-md rounded-lg p-3 border border-gray-200"
           >
-            <span className="text-gray-700">💰 {i.amount} € — {i.source}</span>
+            <span className="text-gray-700">💰 {i.amount} € — {i.source} — {new Date(i.date).toLocaleDateString()}</span>
             {editingIncomeId === i.id ? (
               <>
                 <input className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingIncomeAmount} onChange={(e) => setEditingIncomeAmount(e.target.value)}></input>
@@ -236,6 +238,12 @@ function Transactions() {
           placeholder="Source"
           value={incomeSourceAdd}
           onChange={(e) => setIncomeSourceAdd(e.target.value)}
+        />
+        <input 
+        type='date'
+        className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        value={incomeDateAdd}
+        onChange={(e) => setIncomeDateAdd(e.target.value)}
         />
         <button
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
