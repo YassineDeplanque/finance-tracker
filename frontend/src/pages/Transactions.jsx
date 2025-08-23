@@ -149,10 +149,10 @@ function Transactions() {
             <span className="text-gray-700">💰 {i.amount} € — {i.source}</span>
             {editingIncomeId === i.id ? (
               <>
-                <input value={editingIncomeAmount} onChange={(e) => setEditingIncomeAmount(e.target.value)}></input>
-                <input value={editingIncomeSource} onChange={(e) => setEditingIncomeSource(e.target.value)}></input>
-                <button onClick={() => handleEditIncome(i.id)}>Save</button>
-                <button onClick={() => setEditingIncomeId(null)}>Cancel</button>
+                <input className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingIncomeAmount} onChange={(e) => setEditingIncomeAmount(e.target.value)}></input>
+                <input  className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingIncomeSource} onChange={(e) => setEditingIncomeSource(e.target.value)}></input>
+                <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm" onClick={() => handleEditIncome(i.id)}>Save</button>
+                <button className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm" onClick={() => setEditingIncomeId(null)}>Cancel</button>
               </>
             ) : (
               <>
@@ -163,7 +163,7 @@ function Transactions() {
                   Delete
                 </button>
                 <button
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
                   onClick={() => startEditingIncome(i)}
                 >
                   Edit
@@ -186,7 +186,7 @@ function Transactions() {
             <span className="text-gray-700">💸 {ex.amount} € — {ex.category}</span>
             {editingExpensesId === ex.id ? (
               <>
-                <input value={editingExpensesAmount} onChange={(e) => setEditingExpensesAmount(e.target.value)}></input>
+                <input  className="flex-1 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" value={editingExpensesAmount} onChange={(e) => setEditingExpensesAmount(e.target.value)}></input>
                 <select
                   className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
                   value={editingExpensesCategory}
@@ -197,8 +197,8 @@ function Transactions() {
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
-                <button onClick={() => handleEditExpenses(ex.id)}>Save</button>
-                <button onClick={() => setEditingExpensesId(null)}>Cancel</button>
+                <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm" onClick={() => handleEditExpenses(ex.id)}>Save</button>
+                <button className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm" onClick={() => setEditingExpensesId(null)}>Cancel</button>
               </>
             ) : (
               <>
@@ -209,7 +209,7 @@ function Transactions() {
                   Delete
                 </button>
                 <button
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
                   onClick={() => startEditingExpenses(ex)}
                 >
                   Edit
