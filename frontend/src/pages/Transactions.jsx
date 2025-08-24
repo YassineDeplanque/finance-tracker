@@ -157,6 +157,11 @@ function Transactions() {
     <div className="max-w-4xl mx-auto p-6">
       {/* Incomes */}
       <h1 className="text-2xl font-semibold text-gray-800 mb-4">Incomes</h1>
+      <select className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <option>This year</option>
+        <option>Last 3 months</option>
+        <option>This month</option>
+      </select>
       <ul className="space-y-2 mb-8">
         {income.map((i) => (
           <li
@@ -200,6 +205,11 @@ function Transactions() {
 
       {/* Expenses */}
       <h1 className="text-2xl font-semibold text-gray-800 mb-4">Expenses</h1>
+      <select className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <option>This year</option>
+        <option>Last 3 months</option>
+        <option>This month</option>
+      </select>
       <ul className="space-y-2 mb-8">
         {expenses.map((ex) => (
           <li
