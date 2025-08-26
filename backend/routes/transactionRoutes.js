@@ -1,9 +1,10 @@
 import express from 'express';
-import { getIncome, getExpenses, insertIncome, insertExpenses, deleteIncome, deleteExpenses, editIncome, editExpenses } from '../controllers/transactionController.js';
+import { getIncome, getExpenses, insertIncome, insertExpenses, deleteIncome, deleteExpenses, editIncome, editExpenses, getIncomeThreeMonths } from '../controllers/transactionController.js';
 
 const router = express.Router();
 
 router.get('/income', getIncome)
+router.get('/income/three', getIncomeThreeMonths)
 router.get('/expenses', getExpenses)
 router.post('/income', insertIncome)
 router.post('/expenses', insertExpenses)
