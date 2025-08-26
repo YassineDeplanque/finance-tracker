@@ -3,7 +3,7 @@ import { connection } from "../config/db.js";
 export const getIncome = async (req, res) => {
     try{
         const db = await connection();
-        const query = 'SELECT  * FROM income';
+        const query = 'SELECT  * FROM income ORDER BY date desc';
         const [result] = await db.execute(query);
 
         res.status(200).json(result);
@@ -16,7 +16,7 @@ export const getIncome = async (req, res) => {
 export const getExpenses = async (req, res) => {
     try{
         const db = await connection();
-        const query = 'SELECT  * FROM expenses';
+        const query = 'SELECT  * FROM expenses ORDER BY date desc';
         const [result] = await db.execute(query);
 
         res.status(200).json(result);
