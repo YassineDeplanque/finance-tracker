@@ -3,7 +3,7 @@ import { getIncome, getExpenses, insertIncome, insertExpenses, deleteIncome, del
 
 const router = express.Router();
 
-router.get('/income', getIncome)
+router.get('/income/year', getIncome)
 router.get('/income/three', getIncomeThreeMonths)
 router.get('/expenses', getExpenses)
 router.get('/expenses/three', getExpensesThreeMonths)

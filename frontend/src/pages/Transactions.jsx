@@ -26,12 +26,15 @@ function Transactions() {
   const [editingExpensesCategory, setEditingExpensesCategory] = useState('');
   const [editingExpensesDate, setEditingExpensesDate] = useState('');
 
+  const [intervalIncome, setIntervalIncome] = useState('/year');
+
   const categories = ["Food", "Transport", "Rent", "Entertainment", "Other"];
 
   const fetchIncome = () => {
-    axios.get('http://localhost:3000/transaction/income')
+    axios.get(`http://localhost:3000/transaction/income${intervalIncome}`)
       .then((res) => {
         setIncome(res.data);
+        console.log(intervalIncome)
       })
       .catch((err) => {
         setError(err.message);
@@ -51,7 +54,7 @@ function Transactions() {
 
   useEffect(() => {
     fetchIncome();
-  }, [])
+  }, [intervalIncome])
 
   useEffect(() => {
     fetchExpenses();
@@ -157,10 +160,13 @@ function Transactions() {
     <div className="max-w-4xl mx-auto p-6">
       {/* Incomes */}
       <h1 className="text-2xl font-semibold text-gray-800 mb-4">Incomes</h1>
-      <select className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400">
-        <option>This year</option>
-        <option>Last 3 months</option>
-        <option>This month</option>
+      <select 
+        className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+        value={intervalIncome}
+        onChange={(e) => setIntervalIncome(e.target.value)}>
+        <option value='/year'>This year</option>
+        <option value='/three'>Last 3 months</option>
+        <option value='/month'>This month</option>
       </select>
       <ul className="space-y-2 mb-8">
         {income.map((i) => (
