@@ -61,19 +61,21 @@ function Dashboard() {
         new Date(date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })
     );
 
+
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-            <select
-                className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                value={intervalIncome}
-                onChange={(e) => setIntervalIncome(e.target.value)}>
-                <option value='/year'>This year</option>
-                <option value='/three'>Last 3 months</option>
-                <option value='/month'>This month</option>
-            </select>
+
 
             <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-[400px] md:h-[500px]">
+                <select
+                    className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    value={intervalIncome}
+                    onChange={(e) => setIntervalIncome(e.target.value)}>
+                    <option value='/year'>This year</option>
+                    <option value='/three'>Last 3 months</option>
+                    <option value='/month'>This month</option>
+                </select>
                 <Line
                     data={{
                         labels: labels,
@@ -108,7 +110,6 @@ function Dashboard() {
                             x: {
                                 title: {
                                     display: true,
-                                    text: "Date",
                                 },
                             },
                             y: {
