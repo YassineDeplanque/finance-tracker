@@ -34,6 +34,15 @@ function Dashboard() {
             });
     };
 
+    const fetchExpensesDough = () => {
+        axios.get(`http://localhost:3000/transaction/expenses${intervalExpenses}`)
+            .then((res) => {
+                setExpenses(res.data);
+            })
+            .catch((err) => {
+                setError(err.message);
+            });
+    };
 
     useEffect(() => {
         fetchIncome();
@@ -41,6 +50,10 @@ function Dashboard() {
 
     useEffect(() => {
         fetchExpenses();
+    }, [intervalExpenses])
+
+    useEffect(() => {
+        fetchExpensesDough();
     }, [intervalExpenses])
 
     const allDates = Array.from(
@@ -65,8 +78,6 @@ function Dashboard() {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-
-
             <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-[400px] md:h-[500px]">
                 <select
                     className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -120,6 +131,35 @@ function Dashboard() {
                                 beginAtZero: true,
                             },
                         },
+                    }}
+                />
+            </div>
+             <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-[400px] md:h-[500px]">
+                <select
+                    className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    value={intervalExpenses}
+                    onChange={(e) => setIntervalExpenses(e.target.value)}>
+                    <option value='/year'>This year</option>
+                    <option value='/three'>Last 3 months</option>
+                    <option value='/month'>This month</option>
+                </select>
+                <Doughnut
+                    data={{
+                        labels: expenses.map((ex) => ex.category),
+                        datasets: [
+                            {
+                                label: "Expenses",
+                                data: expenses.map((ex) => ex.amount),
+                                backgroundColor: [
+                                    "rgba(43, 63, 229, 0.8)",
+                                    "rgba(250, 192, 19, 0.8)",
+                                    "rgba(253, 135, 135, 0.8)",
+                                ],
+                                borderRadius: 5,
+                                borderWidth: 2,
+                                tension: 0.3,
+                            },
+                        ],
                     }}
                 />
             </div>
