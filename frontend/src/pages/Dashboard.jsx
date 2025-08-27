@@ -50,7 +50,7 @@ function Dashboard() {
 
     useEffect(() => {
         fetchExpenses();
-    }, [intervalExpenses])
+    }, [intervalIncome])
 
     useEffect(() => {
         fetchExpensesDough();
