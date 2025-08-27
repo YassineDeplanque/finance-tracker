@@ -8,10 +8,11 @@ function Dashboard() {
 
     const [income, setIncome] = useState([]);
     const [expenses, setExpenses] = useState([]);
+    const [expensesDough, setExpensesDough] = useState([]);
     const [error, setError] = useState('');
 
     const [intervalIncome, setIntervalIncome] = useState('/year');
-    const [intervalExpenses, setIntervalExpenses] = useState('/year');
+    const [intervalExpenses, setIntervalExpenses] = useState('/month');
 
     const fetchIncome = () => {
         axios.get(`http://localhost:3000/transaction/income${intervalIncome}`)
@@ -37,7 +38,7 @@ function Dashboard() {
     const fetchExpensesDough = () => {
         axios.get(`http://localhost:3000/transaction/expenses${intervalExpenses}`)
             .then((res) => {
-                setExpenses(res.data);
+                setExpensesDough(res.data);
             })
             .catch((err) => {
                 setError(err.message);
@@ -46,9 +47,6 @@ function Dashboard() {
 
     useEffect(() => {
         fetchIncome();
-    }, [intervalIncome])
-
-    useEffect(() => {
         fetchExpenses();
     }, [intervalIncome])
 
@@ -73,6 +71,24 @@ function Dashboard() {
     const labels = allDates.map((date) =>
         new Date(date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })
     );
+
+    // Grouper les dépenses par catégorie
+    const groupedExpenses = expensesDough.reduce((acc, ex) => {
+        const cat = ex.category || "Autres";
+        if (acc[cat]) {
+            acc[cat] += ex.amount;
+        } else {
+            acc[cat] = ex.amount;
+        }
+        return acc;
+    }, {});
+
+    // Labels = catégories
+    const doughLabels = Object.keys(groupedExpenses);
+
+    // Data = somme des montants par catégorie
+    const doughData = Object.values(groupedExpenses);
+
 
 
     return (
@@ -134,7 +150,7 @@ function Dashboard() {
                     }}
                 />
             </div>
-             <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-[400px] md:h-[500px]">
+            <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-[400px] md:h-[500px]">
                 <select
                     className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
                     value={intervalExpenses}
@@ -145,19 +161,16 @@ function Dashboard() {
                 </select>
                 <Doughnut
                     data={{
-                        labels: expenses.map((ex) => ex.category),
+                        labels: doughLabels,
                         datasets: [
                             {
                                 label: "Expenses",
-                                data: expenses.map((ex) => ex.amount),
-                                backgroundColor: [
-                                    "rgba(43, 63, 229, 0.8)",
-                                    "rgba(250, 192, 19, 0.8)",
-                                    "rgba(253, 135, 135, 0.8)",
-                                ],
+                                data: doughData,
+                                backgroundColor: doughLabels.map(
+                                    (_, i) => `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
+                                ),
                                 borderRadius: 5,
                                 borderWidth: 2,
-                                tension: 0.3,
                             },
                         ],
                     }}

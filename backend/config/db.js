@@ -15,7 +15,6 @@ export const connection = async () => {
         const [result] = await connection.query(
             'SELECT * FROM `income`'
         );
-        console.log(result);
     } catch (err) {
     console.log(err);
     }
