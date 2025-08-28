@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/income/year', getIncome)
 router.get('/income/month', getIncomeMonth)
-router.get('/income/summonth', getSumIncomeMonth)
+router.get('/income/sum/month', getSumIncomeMonth)
 router.get('/income/three', getIncomeThreeMonths)
 router.get('/expenses/year', getExpenses)
 router.get('/expenses/month', getExpensesMonth)
