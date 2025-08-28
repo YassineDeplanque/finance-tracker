@@ -29,6 +29,8 @@ function Transactions() {
   const [intervalIncome, setIntervalIncome] = useState('/year');
   const [intervalExpenses, setIntervalExpenses] = useState('/year');
 
+  const [totalIncome, setTotalIncome] = useState(0);
+
   const categories = ["Food", "Transport", "Rent", "Entertainment", "Other"];
 
   const fetchIncome = () => {
@@ -52,9 +54,24 @@ function Transactions() {
       });
   };
 
+  const fetchTotalIncome = () => {
+    axios.get(`http://localhost:3000/transaction/income/sum${intervalIncome}`)
+      .then((res) => {
+        setTotalIncome(res.data[0].total);
+        console.log('total : ', totalIncome)
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
 
   useEffect(() => {
     fetchIncome();
+  }, [intervalIncome])
+
+  useEffect(() => {
+    fetchTotalIncome();
+    console.log('total : ', totalIncome)
   }, [intervalIncome])
 
   useEffect(() => {
@@ -169,6 +186,9 @@ function Transactions() {
         <option value='/three'>Last 3 months</option>
         <option value='/month'>This month</option>
       </select>
+      <div className="text-gray-800 font-semibold">
+      Total: <span className="text-blue-500">{totalIncome}</span>€
+    </div>
       <ul className="space-y-2 mb-8">
         {income.map((i) => (
           <li
