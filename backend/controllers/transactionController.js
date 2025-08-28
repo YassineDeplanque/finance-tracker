@@ -26,6 +26,19 @@ export const getIncomeMonth = async (req, res) => {
     }
 }
 
+export const getSumIncomeMonth = async (req, res) => {
+    try{
+        const db = await connection();
+        const query = "SELECT  SUM(amount) FROM income WHERE YEAR(date) = YEAR(CURDATE()) AND MONTH(date) = MONTH(CURDATE()) ORDER BY date desc";
+        const [result] = await db.execute(query);
+
+        res.status(200).json(result);
+    } catch(err) {
+        console.error("Error geting incomes : ", err)
+        res.status(500).json({sucess: false, message: "Servor error"})
+    }
+}
+
 
 export const getIncomeThreeMonths = async (req, res) => {
     try{
