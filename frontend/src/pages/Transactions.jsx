@@ -205,7 +205,7 @@ function Transactions() {
       <div className="text-gray-800 font-semibold">
       Total: <span className="text-blue-500">{totalIncome}</span>€
     </div>
-      <ul className="space-y-2 mb-8">
+      <ul className="space-y-2 mb-8 max-h-96 overflow-y-auto">
         {income.map((i) => (
           <li
             key={i.id}
@@ -258,7 +258,7 @@ function Transactions() {
       <div className="text-gray-800 font-semibold">
       Total: <span className="text-blue-500">{totalExpenses}</span>€
     </div>
-      <ul className="space-y-2 mb-8">
+      <ul className="space-y-2 mb-8 max-h-96 overflow-y-auto">
         {expenses.map((ex) => (
           <li
             key={ex.id}
