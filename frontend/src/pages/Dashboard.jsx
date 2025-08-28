@@ -13,6 +13,10 @@ function Dashboard() {
 
     const [intervalIncome, setIntervalIncome] = useState('/year');
     const [intervalExpenses, setIntervalExpenses] = useState('/month');
+    const [intervalBar, setIntervalBar] = useState('/month')
+
+    const [totalIncome, setTotalIncome] = useState(0);
+    const [totalExpenses, setTotalExpenses] = useState(0);
 
     const fetchIncome = () => {
         axios.get(`http://localhost:3000/transaction/income${intervalIncome}`)
@@ -45,6 +49,27 @@ function Dashboard() {
             });
     };
 
+    const fetchTotalIncome = () => {
+        axios.get(`http://localhost:3000/transaction/income/sum${intervalBar}`)
+            .then((res) => {
+                setTotalIncome(res.data[0].total);
+                console.log('total : ', totalIncome)
+            })
+            .catch((err) => {
+                setError(err.message);
+            });
+    };
+
+    const fetchTotalExpenses = () => {
+        axios.get(`http://localhost:3000/transaction/expenses/sum${intervalBar}`)
+            .then((res) => {
+                setTotalExpenses(res.data[0].total);
+            })
+            .catch((err) => {
+                setError(err.message);
+            });
+    };
+
     useEffect(() => {
         fetchIncome();
         fetchExpenses();
@@ -53,6 +78,15 @@ function Dashboard() {
     useEffect(() => {
         fetchExpensesDough();
     }, [intervalExpenses])
+
+    useEffect(() => {
+        fetchTotalIncome();
+        console.log('total : ', totalIncome)
+    }, [intervalBar])
+
+    useEffect(() => {
+        fetchTotalExpenses();
+    }, [intervalBar])
 
     const allDates = Array.from(
         new Set([
@@ -150,32 +184,91 @@ function Dashboard() {
                     }}
                 />
             </div>
-            <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-[400px] md:h-[500px]">
-                <select
-                    className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    value={intervalExpenses}
-                    onChange={(e) => setIntervalExpenses(e.target.value)}>
-                    <option value='/year'>This year</option>
-                    <option value='/three'>Last 3 months</option>
-                    <option value='/month'>This month</option>
-                </select>
-                <Doughnut
-                    data={{
-                        labels: doughLabels,
-                        datasets: [
-                            {
-                                label: "Expenses",
-                                data: doughData,
-                                backgroundColor: doughLabels.map(
-                                    (_, i) => `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
-                                ),
-                                borderRadius: 5,
-                                borderWidth: 2,
-                            },
-                        ],
-                    }}
-                />
+            <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-auto md:h-[500px]">
+                <div className="flex flex-col md:flex-row gap-6 h-full">
+
+                    {/* Doughnut chart */}
+                    <div className="flex-1 flex flex-col justify-start min-w-[300px]">
+                        <select
+                            className="w-40 mb-4 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            value={intervalExpenses}
+                            onChange={(e) => setIntervalExpenses(e.target.value)}
+                        >
+                            <option value='/year'>This year</option>
+                            <option value='/three'>Last 3 months</option>
+                            <option value='/month'>This month</option>
+                        </select>
+                        <div className="w-full h-[250px] md:h-full">
+                            <Doughnut
+                                data={{
+                                    labels: doughLabels,
+                                    datasets: [
+                                        {
+                                            label: "Expenses",
+                                            data: doughData,
+                                            backgroundColor: doughLabels.map(
+                                                (_, i) => `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
+                                            ),
+                                            borderRadius: 5,
+                                            borderWidth: 2,
+                                        },
+                                    ],
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Bar chart */}
+                    <div className="flex-1 flex flex-col justify-start min-w-[300px]">
+                        <select
+                            className="w-40 mb-4 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            value={intervalBar}
+                            onChange={(e) => setIntervalBar(e.target.value)}
+                        >
+                            <option value='/year'>This year</option>
+                            <option value='/three'>Last 3 months</option>
+                            <option value='/month'>This month</option>
+                        </select>
+                        <div className="w-full h-[250px] md:h-full">
+                            <Bar
+                                data={{
+                                    labels: ["Income", "Expenses"],
+                                    datasets: [
+                                        {
+                                            label: "Total",
+                                            data: [totalIncome, totalExpenses],
+                                            backgroundColor: ['#ADD8E6', '#FF0000'],
+                                            borderRadius: 5,
+                                            borderWidth: 2,
+                                        },
+                                    ],
+                                }}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false,
+                                        },
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            title: {
+                                                display: true,
+                                                text: "Amount (€)",
+                                            },
+                                        },
+                                    },
+                                }}
+
+                            />
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
         </div>
 
     )
