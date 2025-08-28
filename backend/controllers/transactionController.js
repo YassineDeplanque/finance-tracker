@@ -92,6 +92,19 @@ export const getExpenses = async (req, res) => {
     }
 }
 
+export const getSumExpenses = async (req, res) => {
+    try{
+        const db = await connection();
+        const query = 'SELECT  SUM(AMOUNT) AS total FROM expenses';
+        const [result] = await db.execute(query);
+
+        res.status(200).json(result);
+    } catch(err) {
+        console.error("Error geting incomes : ", err)
+        res.status(500).json({sucess: false, message: "Servor error"})
+    }
+}
+
 export const getExpensesMonth = async (req, res) => {
     try{
         const db = await connection();
