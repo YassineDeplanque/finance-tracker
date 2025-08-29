@@ -1,6 +1,6 @@
 function Home() {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 antialiased flex items-center justify-center p-4">
       <div className="max-w-xl text-center bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           Welcome to your Finance Tracker! 💰
@@ -11,9 +11,6 @@ function Home() {
         <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-lg font-medium transition">
           Get Started
         </button>
-      </div>
-      <div className="mt-10 text-gray-400 text-sm">
-        Made with ❤️ by your finance tracker
       </div>
     </div>
   );

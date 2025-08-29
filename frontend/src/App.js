@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Transactions from './pages/Transactions';
 import Dashboard from './pages/Dashboard'
+import HomeDisconnected from './pages/HomeDisconnected';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import NotFound from './pages/NotFound';
@@ -15,9 +16,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
         </Route>
+        <Route path="/homedisc" element={<HomeDisconnected />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
