@@ -3,7 +3,8 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Transactions from './pages/Transactions';
 import Dashboard from './pages/Dashboard'
-import Authentification from './pages/Authentification';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/auth" element={<Authentification />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
