@@ -126,152 +126,139 @@ function Dashboard() {
 
 
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-            <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-[400px] md:h-[500px]">
-                <select
-                    className="flex-1 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    value={intervalIncome}
-                    onChange={(e) => setIntervalIncome(e.target.value)}>
-                    <option value='/year'>This year</option>
-                    <option value='/three'>Last 3 months</option>
-                    <option value='/month'>This month</option>
-                </select>
-                <Line
-                    data={{
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: "Income",
-                                data: incomeData,
-                                backgroundColor: "rgba(6, 79, 240, 0.2)",
-                                borderColor: "#064FF0",
-                                borderWidth: 2,
-                                tension: 0.3,
-                            },
-                            {
-                                label: "Expenses",
-                                data: expensesData,
-                                backgroundColor: "rgba(240, 6, 6, 0.2)",
-                                borderColor: "#F00606",
-                                borderWidth: 2,
-                                tension: 0.3,
-                            },
-                        ],
-                    }}
-                    options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: "top",
-                            },
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                },
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: "Amount (€)",
-                                },
-                                beginAtZero: true,
-                            },
-                        },
-                    }}
-                />
+  <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 antialiased p-6">
+    <div className="max-w-6xl mx-auto space-y-10">
+
+      <h1 className="text-3xl font-bold mb-4 text-white">📊 Dashboard</h1>
+
+      {/* Line Chart */}
+      <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700 w-full h-[400px] md:h-[500px]">
+        <select
+          className="mb-4 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
+          value={intervalIncome}
+          onChange={(e) => setIntervalIncome(e.target.value)}
+        >
+          <option value='/year'>This year</option>
+          <option value='/three'>Last 3 months</option>
+          <option value='/month'>This month</option>
+        </select>
+        <Line
+          data={{
+            labels: labels,
+            datasets: [
+              {
+                label: "Income",
+                data: incomeData,
+                backgroundColor: "rgba(6, 79, 240, 0.2)",
+                borderColor: "#064FF0",
+                borderWidth: 2,
+                tension: 0.3,
+              },
+              {
+                label: "Expenses",
+                data: expensesData,
+                backgroundColor: "rgba(240, 6, 6, 0.2)",
+                borderColor: "#F00606",
+                borderWidth: 2,
+                tension: 0.3,
+              },
+            ],
+          }}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: "top", labels: { color: 'white' } } },
+            scales: {
+              x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+              y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: "Amount (€)", color: 'white' }, beginAtZero: true },
+            },
+          }}
+        />
+      </div>
+
+      {/* Doughnut + Bar Charts */}
+      <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700 w-full h-auto md:h-[500px]">
+        <div className="flex flex-col md:flex-row gap-6 h-full">
+
+          {/* Doughnut Chart */}
+          <div className="flex-1 flex flex-col justify-start min-w-[300px]">
+            <select
+              className="w-40 mb-4 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
+              value={intervalExpenses}
+              onChange={(e) => setIntervalExpenses(e.target.value)}
+            >
+              <option value='/year'>This year</option>
+              <option value='/three'>Last 3 months</option>
+              <option value='/month'>This month</option>
+            </select>
+            <div className="w-full h-[250px] md:h-full">
+              <Doughnut
+                data={{
+                  labels: doughLabels,
+                  datasets: [
+                    {
+                      label: "Expenses",
+                      data: doughData,
+                      backgroundColor: doughLabels.map(
+                        (_, i) => `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
+                      ),
+                      borderRadius: 5,
+                      borderWidth: 2,
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: { legend: { labels: { color: 'white' } } },
+                }}
+              />
             </div>
-            <div className="bg-white shadow-md rounded-2xl p-6 w-full max-w-full h-auto md:h-[500px]">
-                <div className="flex flex-col md:flex-row gap-6 h-full">
+          </div>
 
-                    {/* Doughnut chart */}
-                    <div className="flex-1 flex flex-col justify-start min-w-[300px]">
-                        <select
-                            className="w-40 mb-4 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            value={intervalExpenses}
-                            onChange={(e) => setIntervalExpenses(e.target.value)}
-                        >
-                            <option value='/year'>This year</option>
-                            <option value='/three'>Last 3 months</option>
-                            <option value='/month'>This month</option>
-                        </select>
-                        <div className="w-full h-[250px] md:h-full">
-                            <Doughnut
-                                data={{
-                                    labels: doughLabels,
-                                    datasets: [
-                                        {
-                                            label: "Expenses",
-                                            data: doughData,
-                                            backgroundColor: doughLabels.map(
-                                                (_, i) => `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
-                                            ),
-                                            borderRadius: 5,
-                                            borderWidth: 2,
-                                        },
-                                    ],
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Bar chart */}
-                    <div className="flex-1 flex flex-col justify-start min-w-[300px]">
-                        <select
-                            className="w-40 mb-4 border border-gray-300 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            value={intervalBar}
-                            onChange={(e) => setIntervalBar(e.target.value)}
-                        >
-                            <option value='/year'>This year</option>
-                            <option value='/three'>Last 3 months</option>
-                            <option value='/month'>This month</option>
-                        </select>
-                        <div className="w-full h-[250px] md:h-full">
-                            <Bar
-                                data={{
-                                    labels: ["Income", "Expenses"],
-                                    datasets: [
-                                        {
-                                            label: "Total",
-                                            data: [totalIncome, totalExpenses],
-                                            backgroundColor: ['#ADD8E6', '#FF0000'],
-                                            borderRadius: 5,
-                                            borderWidth: 2,
-                                        },
-                                    ],
-                                }}
-                                options={{
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        legend: {
-                                            display: false,
-                                        },
-                                    },
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true,
-                                            title: {
-                                                display: true,
-                                                text: "Amount (€)",
-                                            },
-                                        },
-                                    },
-                                }}
-
-                            />
-                        </div>
-                    </div>
-
-                </div>
+          {/* Bar Chart */}
+          <div className="flex-1 flex flex-col justify-start min-w-[300px]">
+            <select
+              className="w-40 mb-4 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
+              value={intervalBar}
+              onChange={(e) => setIntervalBar(e.target.value)}
+            >
+              <option value='/year'>This year</option>
+              <option value='/three'>Last 3 months</option>
+              <option value='/month'>This month</option>
+            </select>
+            <div className="w-full h-[250px] md:h-full">
+              <Bar
+                data={{
+                  labels: ["Income", "Expenses"],
+                  datasets: [
+                    {
+                      label: "Total",
+                      data: [totalIncome, totalExpenses],
+                      backgroundColor: ['#ADD8E6', '#FF0000'],
+                      borderRadius: 5,
+                      borderWidth: 2,
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: { legend: { display: false } },
+                  scales: {
+                    y: { beginAtZero: true, title: { display: true, text: "Amount (€)", color: 'white' }, ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                    x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                  },
+                }}
+              />
             </div>
+          </div>
 
         </div>
+      </div>
 
-    )
+    </div>
+  </div>
+);
+
 }
 
 export default Dashboard;
