@@ -32,7 +32,7 @@ function Transactions() {
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
 
-  const categories = ["Food", "Transport", "Rent", "Entertainment", "Other"];
+  const categories = ["Food", "Transport", "Rent", "Shopping", "Restaurant", "Outing", "Other"];
 
   const fetchIncome = () => {
     axios.get(`http://localhost:3000/transaction/income${intervalIncome}`)
