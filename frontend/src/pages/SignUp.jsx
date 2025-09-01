@@ -63,11 +63,11 @@ function SignIn() {
                         </form>
 
                         <p className="mt-6 text-center text-sm text-slate-400">
-                            Already have an account?
+                            Already have an account ?
                             <NavLink
                                 className="text-indigo-300 hover:text-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 rounded"
                                 to='/signin'>
-                                Sign in
+                                - Sign in
                             </NavLink>
                         </p>
                     </div>
