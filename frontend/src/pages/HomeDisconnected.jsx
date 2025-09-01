@@ -121,7 +121,7 @@ function HomeDisconnected() {
         </section>
 
         <p className="text-center text-xs text-slate-400 mt-20 mb-10">
-          © 2025 Your Company
+          © 2025 Yassine Deplanque
         </p>
       </div>
     </div>

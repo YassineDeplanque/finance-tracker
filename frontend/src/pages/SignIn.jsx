@@ -83,7 +83,7 @@ function SignIn() {
                         </p>
                     </div>
 
-                    <p className="text-center text-xs text-slate-400 mt-4">© 2025 Your Company</p>
+                    <p className="text-center text-xs text-slate-400 mt-4">© 2025 Yassine Deplanque</p>
                 </div>
             </div>
         </div>

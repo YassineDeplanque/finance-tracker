@@ -34,7 +34,7 @@ function Home() {
             </NavLink>
           </div>
         </div>
-        <p className="text-center text-xs text-slate-400 mt-6">© 2025 Finance Tracker</p>
+        <p className="text-center text-xs text-slate-400 mt-6">© 2025 Yassine Deplanque</p>
       </div>
     </div>
   );
