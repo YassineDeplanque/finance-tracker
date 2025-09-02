@@ -1,11 +1,32 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 import NavbarDisconnected from '../components/NavbarDisconnected';
 
 function SignIn() {
 
+    const navigate = useNavigate();
+
     const [open, setOpen] = useState(false);
 
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [error, setError] = useState("");
+
+    const handleLogin = () => {
+        const newLogin = {email: email, password: password};
+        axios.post("http://localhost:3000/user/login", newLogin)
+          .then((res) => {
+            setEmail("");
+            setPassword("");
+            navigate('/')
+          })
+          .catch((err) => {
+            setError(err.message);
+          })
+    }
     return (
 
         <div className="bg-white border-gray-200 dark:bg-gray-900">
@@ -24,13 +45,15 @@ function SignIn() {
                             <p className="text-slate-300 text-sm mt-1">Access your account with ease</p>
                         </header>
 
-                        <form action="#" method="post" className="space-y-5">
+                        <div className="space-y-5">
                             <div>
                                 <label htmlFor="email" className="block text-sm text-slate-300">Email address</label>
                                 <input
                                     id="email"
                                     name="email"
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                     autoComplete="email"
                                     placeholder="you@example.com"
@@ -44,6 +67,8 @@ function SignIn() {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     required
                                     autoComplete="current-password"
                                     placeholder="••••••••"
@@ -68,11 +93,10 @@ function SignIn() {
                                 <a href="#" className="text-sm text-indigo-300 hover:text-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 rounded">Forgot password?</a>
                             </div>
 
-                            <button type="submit" className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                            <button onClick={() => handleLogin()} className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
                                 Sign in
                             </button>
-                        </form>
-
+                        </div>
                         <p className="mt-6 text-center text-sm text-slate-400">
                             Don’t have an account ? 
                             <NavLink
