@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import NavbarDisconnected from '../components/NavbarDisconnected';
 
 function SignIn() {
 
     const [open, setOpen] = useState(false);
+
+    const navigate = useNavigate();
 
     const [name, setName] = useState("");
     const [lastname, setLastame] = useState("");
@@ -14,10 +17,13 @@ function SignIn() {
 
     const [error, setError] = useState("");
 
-     const handleInsert = () => {
+    const [showPopup, setShowPopup] = useState(false);
+
+    const handleInsert = () => {
         const newLogin = { name: name, lastname: lastname, email: email, password: password };
         axios.post("http://localhost:3000/user", newLogin)
             .then((res) => {
+                setShowPopup(true)
                 setName("")
                 setLastame("")
                 setEmail("");
@@ -129,6 +135,30 @@ function SignIn() {
                     <p className="text-center text-xs text-slate-400 mt-4">© 2025 Yassine Deplanque</p>
                 </div>
             </div>
+            {showPopup && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <div className="bg-gray-900 text-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+                        <h2 className="text-xl font-bold mb-4">Notification</h2>
+                        <p>Account created!</p>
+
+                        <div className="mt-4 flex gap-4 justify-center">
+                            <button
+                                onClick={() => setShowPopup(false)}
+                                className="px-4 py-2 bg-indigo-500 rounded hover:bg-indigo-600"
+                            >
+                                Close
+                            </button>
+                            <button
+                                onClick={() => navigate('/signin')}
+                                className="px-4 py-2 bg-indigo-500 rounded hover:bg-indigo-600"
+                            >
+                                Sign In
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            )}
         </div>
     );
 
