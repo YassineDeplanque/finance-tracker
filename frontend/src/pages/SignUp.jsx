@@ -1,10 +1,32 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 import NavbarDisconnected from '../components/NavbarDisconnected';
 
 function SignIn() {
 
     const [open, setOpen] = useState(false);
+
+    const [name, setName] = useState("");
+    const [lastname, setLastame] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [error, setError] = useState("");
+
+     const handleInsert = () => {
+        const newLogin = { name: name, lastname: lastname, email: email, password: password };
+        axios.post("http://localhost:3000/user", newLogin)
+            .then((res) => {
+                setName("")
+                setLastame("")
+                setEmail("");
+                setPassword("");
+            })
+            .catch((err) => {
+                setError(err.message);
+            })
+    }
 
     return (
         <div className="bg-white border-gray-200 dark:bg-gray-900">
@@ -22,13 +44,15 @@ function SignIn() {
                             <p className="text-slate-300 text-sm mt-1">Create your account with ease</p>
                         </header>
 
-                        <form action="#" method="post" className="space-y-5">
+                        <div action="#" method="post" className="space-y-5">
                             <div>
-                                <label htmlFor="email" className="block text-sm text-slate-300">Name</label>
+                                <label className="block text-sm text-slate-300">Name</label>
                                 <input
                                     id="name"
                                     name="name"
                                     type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                     required
                                     autoComplete="name"
                                     placeholder="Name"
@@ -41,6 +65,8 @@ function SignIn() {
                                     id="lastname"
                                     name="lastname"
                                     type="text"
+                                    value={lastname}
+                                    onChange={(e) => setLastame(e.target.value)}
                                     required
                                     autoComplete="lastname"
                                     placeholder="Last name"
@@ -53,6 +79,8 @@ function SignIn() {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                     autoComplete="email"
                                     placeholder="you@example.com"
@@ -66,6 +94,8 @@ function SignIn() {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     required
                                     autoComplete="current-password"
                                     placeholder="••••••••"
@@ -81,10 +111,10 @@ function SignIn() {
                                     </svg>
                                 </button>
                             </div>
-                            <button type="submit" className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                            <button onClick={() => handleInsert()} type="submit" className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
                                 Sign up
                             </button>
-                        </form>
+                        </div>
 
                         <p className="mt-6 text-center text-sm text-slate-400">
                             Already have an account ?
