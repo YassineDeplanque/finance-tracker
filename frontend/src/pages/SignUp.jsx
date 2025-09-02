@@ -24,6 +24,30 @@ function SignIn() {
 
                         <form action="#" method="post" className="space-y-5">
                             <div>
+                                <label htmlFor="email" className="block text-sm text-slate-300">Name</label>
+                                <input
+                                    id="name"
+                                    name="name"
+                                    type="text"
+                                    required
+                                    autoComplete="name"
+                                    placeholder="Name"
+                                    className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="email" className="block text-sm text-slate-300">Last name</label>
+                                <input
+                                    id="lastname"
+                                    name="lastname"
+                                    type="text"
+                                    required
+                                    autoComplete="lastname"
+                                    placeholder="Last name"
+                                    className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
+                                />
+                            </div>
+                            <div>
                                 <label htmlFor="email" className="block text-sm text-slate-300">Email address</label>
                                 <input
                                     id="email"
