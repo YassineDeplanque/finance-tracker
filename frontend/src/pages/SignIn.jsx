@@ -16,16 +16,23 @@ function SignIn() {
     const [error, setError] = useState("");
 
     const handleLogin = () => {
-        const newLogin = {email: email, password: password};
+        const newLogin = { email: email, password: password };
         axios.post("http://localhost:3000/user/login", newLogin)
-          .then((res) => {
-            setEmail("");
-            setPassword("");
-            navigate('/')
-          })
-          .catch((err) => {
-            setError(err.message);
-          })
+            .then((res) => {
+                setEmail("");
+                setPassword("");
+                navigate('/')
+            })
+            .catch((err) => {
+                setError(err.message);
+                if (email === "" || password === "") {
+                    setError("All fields must be filled.");
+                } else {
+                    setError("Email or password wrong.");
+                }
+                setEmail("");
+                setPassword("");
+            })
     }
     return (
 
@@ -96,9 +103,18 @@ function SignIn() {
                             <button onClick={() => handleLogin()} className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
                                 Sign in
                             </button>
+                            {error !== "" ? (
+                                <div>
+                                    <p className='text-red-500'>
+                                        {error}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div></div>
+                            )}
                         </div>
                         <p className="mt-6 text-center text-sm text-slate-400">
-                            Don’t have an account ? 
+                            Don’t have an account ?
                             <NavLink
                                 className="text-indigo-300 hover:text-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 rounded"
                                 to='/signup'>
