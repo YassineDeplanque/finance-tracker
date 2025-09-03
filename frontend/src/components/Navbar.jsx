@@ -78,6 +78,18 @@ function Navbar() {
             </li>
             <li>
               <NavLink
+                to="/contact"
+                className={({ isActive }) =>
+                  isActive
+                    ? 'block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0'
+                    : 'block py-2 px-3 text-gray-100 rounded-sm hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0'
+                }
+              >
+                Contact
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
                 to="/signin"
                 className={({ isActive }) =>
                   isActive

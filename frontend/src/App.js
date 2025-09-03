@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import HomeDisconnected from './pages/HomeDisconnected';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
         <Route path="/homedisc" element={<HomeDisconnected />} />
         <Route path="/signin" element={<SignIn />} />
