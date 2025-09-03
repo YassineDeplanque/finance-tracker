@@ -114,7 +114,7 @@ function HomeDisconnected() {
               <img
                 src={cadena}
                 alt="cadena"
-                className='h-80'
+                className='h-48'
               />
             </div>
             </div>
