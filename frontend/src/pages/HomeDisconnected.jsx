@@ -3,6 +3,7 @@ import NavbarDisconnected from '../components/NavbarDisconnected';
 import graphScreen from '../assets/graphScreen.PNG'
 import trackScreen from '../assets/trackScreen.PNG'
 import cadena from '../assets/cadena.png'
+import logo from '../assets/logo.png';
 
 function HomeDisconnected() {
   return (
@@ -13,19 +14,15 @@ function HomeDisconnected() {
         <div className="w-full max-w-2xl flex-1 flex flex-col justify-center mt-20">
           <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-10 text-center">
             <header className="mb-8">
-              <div className="mx-auto h-14 w-14 rounded-2xl bg-white/10 grid place-items-center shadow">
+              <div className="mx-auto h-14 w-14 rounded-2xl grid place-items-center">
                 {/* Money Icon */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  className="h-7 w-7 text-slate-100"
-                >
-                  <path d="M12 2.25c-5.385 0-9.75 2.91-9.75 6.5v6.5c0 3.59 4.365 6.5 9.75 6.5s9.75-2.91 9.75-6.5v-6.5c0-3.59-4.365-6.5-9.75-6.5zm0 2c4.28 0 7.75 2.019 7.75 4.5s-3.47 4.5-7.75 4.5-7.75-2.019-7.75-4.5 3.47-4.5 7.75-4.5zM4.25 12.56c1.48 1.24 4.27 2.19 7.75 2.19s6.27-.95 7.75-2.19V15c0 2.481-3.47 4.5-7.75 4.5S4.25 17.481 4.25 15v-2.44z" />
-                </svg>
+                <img
+                  src={logo}
+                  className="h-17 w-17 text-slate-100"                
+                />
               </div>
               <h1 className="mt-4 text-3xl font-semibold tracking-tight">
-                Welcome to <span className="text-indigo-400">Finance Tracker</span>
+                Welcome to <span className="text-indigo-400">BlueTrack</span>
               </h1>
               <p className="text-slate-300 text-sm mt-2">
                 Track your incomes, expenses, and manage your budget smarter.
