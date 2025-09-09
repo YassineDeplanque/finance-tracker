@@ -90,7 +90,7 @@ function Navbar() {
             </li>
             <li>
               <NavLink
-                to="/signin"
+                to="/homedisc"
                 className={({ isActive }) =>
                   isActive
                     ? 'block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0'
