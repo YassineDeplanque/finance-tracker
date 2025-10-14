@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { useState, useEffect } from "react";
 
+// Configure axios globalement pour envoyer les cookies
+axios.defaults.withCredentials = true;
+
 function Transactions() {
 
   const [income, setIncome] = useState([]);
@@ -34,11 +37,11 @@ function Transactions() {
 
   const categories = ["Food", "Transport", "Rent", "Shopping", "Restaurant", "Outing", "Other"];
 
+  // ====== Fetch Income ======
   const fetchIncome = () => {
-    axios.get(`http://localhost:3000/transaction/income${intervalIncome}`)
+    axios.get(`http://localhost:3000/transaction/income${intervalIncome}`, { withCredentials: true })
       .then((res) => {
         setIncome(res.data);
-        console.log(intervalIncome)
       })
       .catch((err) => {
         setError(err.message);
@@ -46,7 +49,7 @@ function Transactions() {
   };
 
   const fetchExpenses = () => {
-    axios.get(`http://localhost:3000/transaction/expenses${intervalExpenses}`)
+    axios.get(`http://localhost:3000/transaction/expenses${intervalExpenses}`, { withCredentials: true })
       .then((res) => {
         setExpenses(res.data);
       })
@@ -56,10 +59,9 @@ function Transactions() {
   };
 
   const fetchTotalIncome = () => {
-    axios.get(`http://localhost:3000/transaction/income/sum${intervalIncome}`)
+    axios.get(`http://localhost:3000/transaction/income/sum${intervalIncome}`, { withCredentials: true })
       .then((res) => {
-        setTotalIncome(res.data[0].total);
-        console.log('total : ', totalIncome)
+        setTotalIncome(res.data.total ?? 0);
       })
       .catch((err) => {
         setError(err.message);
@@ -67,127 +69,99 @@ function Transactions() {
   };
 
   const fetchTotalExpenses = () => {
-    axios.get(`http://localhost:3000/transaction/expenses/sum${intervalExpenses}`)
+    axios.get(`http://localhost:3000/transaction/expenses/sum${intervalExpenses}`, { withCredentials: true })
       .then((res) => {
-        setTotalExpenses(res.data[0].total);
+        setTotalExpenses(res.data.total ?? 0);
       })
       .catch((err) => {
         setError(err.message);
       });
   };
 
+  // ====== useEffect ======
+  useEffect(() => { fetchIncome(); fetchTotalIncome(); }, [intervalIncome]);
+  useEffect(() => { fetchExpenses(); fetchTotalExpenses(); }, [intervalExpenses]);
 
-  useEffect(() => {
-    fetchIncome();
-  }, [intervalIncome])
-
-  useEffect(() => {
-    fetchTotalIncome();
-    console.log('total : ', totalIncome)
-  }, [intervalIncome])
-
-  useEffect(() => {
-    fetchExpenses();
-  }, [intervalExpenses])
-
-  useEffect(() => {
-    fetchTotalExpenses();
-  }, [intervalExpenses])
-
+  // ====== Add Income ======
   const handleSubmitIncome = () => {
-    const newIncome = { amount: incomeAmountAdd, source: incomeSourceAdd, date: incomeDateAdd }
-    axios.post("http://localhost:3000/transaction/income", newIncome)
+    const newIncome = { amount: incomeAmountAdd, source: incomeSourceAdd, date: incomeDateAdd };
+    axios.post("http://localhost:3000/transaction/income", newIncome, { withCredentials: true })
       .then(res => {
         fetchIncome();
         setIncomeAmountAdd('');
         setIncomeSourceAdd('');
         setIncomeDateAdd('');
       })
-      .catch((err) => {
-        setError(err.message)
-      })
+      .catch((err) => setError(err.message));
   }
 
+  // ====== Add Expenses ======
   const handleSubmitExpenses = () => {
-    const newExpenses = { amount: expensesAmountAdd, category: expensesCategoryAdd, date: expensesDateAdd }
-    axios.post("http://localhost:3000/transaction/expenses", newExpenses)
+    const newExpenses = { amount: expensesAmountAdd, category: expensesCategoryAdd, date: expensesDateAdd };
+    axios.post("http://localhost:3000/transaction/expenses", newExpenses, { withCredentials: true })
       .then(res => {
         fetchExpenses();
         setExpensesAmountAdd('');
         setExpensesCategopryAdd('');
         setExpensesDateAdd('');
       })
-      .catch((err) => {
-        setError(err.message)
-      })
+      .catch((err) => setError(err.message));
   }
 
+  // ====== Delete Income ======
   const handleDeleteIncome = (id) => {
-    axios.delete(`http://localhost:3000/transaction/income/${id}`)
+    axios.delete(`http://localhost:3000/transaction/income/${id}`, { withCredentials: true })
       .then((res) => {
-        setIncome(income.filter(i => i.id !== id))
+        setIncome(income.filter(i => i.id !== id));
       })
-      .catch((err) => {
-        setError(err.message)
-      })
+      .catch((err) => setError(err.message));
   }
 
+  // ====== Delete Expenses ======
   const handleDeleteExpenses = (id) => {
-    axios.delete(`http://localhost:3000/transaction/expenses/${id}`)
+    axios.delete(`http://localhost:3000/transaction/expenses/${id}`, { withCredentials: true })
       .then((res) => {
-        setExpenses(expenses.filter(ex => ex.id !== id))
+        setExpenses(expenses.filter(ex => ex.id !== id));
       })
-      .catch((err) => {
-        setError(err.message)
-      })
+      .catch((err) => setError(err.message));
   }
 
+  // ====== Edit Income ======
   const startEditingIncome = (incomes) => {
     setEditingIncomeId(incomes.id);
     setEditingIncomeAmount(incomes.amount);
     setEditingIncomeSource(incomes.source);
     const d = new Date(incomes.date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-
-  setEditingIncomeDate(`${year}-${month}-${day}`);
+    setEditingIncomeDate(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
   }
 
   const handleEditIncome = (id) => {
-    const editIncome = { amount: editingIncomeAmount, source: editingIncomeSource, date: editingIncomeDate }
-    axios.put(`http://localhost:3000/transaction/income/${id}`, editIncome)
-      .then((res) => {
+    const editIncome = { amount: editingIncomeAmount, source: editingIncomeSource, date: editingIncomeDate };
+    axios.put(`http://localhost:3000/transaction/income/${id}`, editIncome, { withCredentials: true })
+      .then(res => {
         fetchIncome();
         setEditingIncomeId(null);
       })
-      .catch((err) => {
-        setError(err.message);
-      })
+      .catch(err => setError(err.message));
   }
 
+  // ====== Edit Expenses ======
   const startEditingExpenses = (expense) => {
     setEditingExpensesId(expense.id);
     setEditingExpensesAmount(expense.amount);
     setEditingExpensesCategory(expense.category);
     const d = new Date(expense.date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    setEditingExpensesDate(`${year}-${month}-${day}`);
+    setEditingExpensesDate(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
   }
 
   const handleEditExpenses = (id) => {
-    const editExpenses = { amount: editingExpensesAmount, category: editingExpensesCategory, date: editingExpensesDate}
-    axios.put(`http://localhost:3000/transaction/expenses/${id}`, editExpenses)
-    .then((res) => {
+    const editExpenses = { amount: editingExpensesAmount, category: editingExpensesCategory, date: editingExpensesDate };
+    axios.put(`http://localhost:3000/transaction/expenses/${id}`, editExpenses, { withCredentials: true })
+      .then(res => {
         fetchExpenses();
         setEditingExpensesId(null);
       })
-      .catch((err) => {
-        setError(err.message);
-      })
-
+      .catch(err => setError(err.message));
   }
 
 return (

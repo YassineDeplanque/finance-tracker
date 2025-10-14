@@ -42,6 +42,11 @@ export const login = async (req, res) => {
         if (!passwordValid) {
             return res.status(401).json({ success: false, message: "Email or password incorrect." });
         }
+
+        req.session.userId = user.id;
+        console.log("✅ Session créée :", req.session);
+        req.session.userEmail = user.email;
+        
         res.status(200).json({
             success: true,
             message: "User logged in",
@@ -53,3 +58,11 @@ export const login = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 }
+
+export const logout = (req, res) => {
+    req.session.destroy(err => {
+        if (err) return res.status(500).json({ success: false, message: "Logout failed" });
+        res.clearCookie("connect.sid");
+        res.status(200).json({ success: true, message: "Logged out" });
+    });
+};
