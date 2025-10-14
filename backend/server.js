@@ -12,14 +12,14 @@ const port = process.env.PORT;
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3001', // l'URL de ton front
+    origin: 'http://localhost:3001',
     credentials: true
 }));
 
 app.use(express.json())
 
 app.use(session({
-    secret: process.env.SESSION_SECRET || "dev-secret-key", // choisis une vraie clé en prod
+    secret: process.env.SESSION_SECRET || "dev-secret-key",
     resave: false,
     saveUninitialized: false,
     cookie: {

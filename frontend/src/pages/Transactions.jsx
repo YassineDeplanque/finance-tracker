@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from "react";
 
-// Configure axios globalement pour envoyer les cookies
 axios.defaults.withCredentials = true;
 
 function Transactions() {

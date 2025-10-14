@@ -2,7 +2,6 @@ import { connection } from "../config/db.js";
 
 // ====================== INCOME ======================
 
-// Récupérer tous les revenus du user
 export const getIncome = async (req, res) => {
     try {
         const db = await connection();
@@ -16,7 +15,6 @@ export const getIncome = async (req, res) => {
     }
 };
 
-// Somme totale des revenus du user
 export const getSumIncome = async (req, res) => {
     try {
         const db = await connection();
@@ -30,7 +28,6 @@ export const getSumIncome = async (req, res) => {
     }
 };
 
-// Revenus du mois en cours
 export const getIncomeMonth = async (req, res) => {
     try {
         const db = await connection();
@@ -50,7 +47,6 @@ export const getIncomeMonth = async (req, res) => {
     }
 };
 
-// Somme des revenus du mois
 export const getSumIncomeMonth = async (req, res) => {
     try {
         const db = await connection();
@@ -69,7 +65,6 @@ export const getSumIncomeMonth = async (req, res) => {
     }
 };
 
-// Revenus sur les 3 derniers mois
 export const getIncomeThreeMonths = async (req, res) => {
     try {
         const db = await connection();
@@ -88,7 +83,6 @@ export const getIncomeThreeMonths = async (req, res) => {
     }
 };
 
-// Somme des revenus sur les 3 derniers mois
 export const getSumIncomeThreeMonths = async (req, res) => {
     try {
         const db = await connection();
@@ -106,7 +100,6 @@ export const getSumIncomeThreeMonths = async (req, res) => {
     }
 };
 
-// Ajouter un revenu
 export const insertIncome = async (req, res) => {
     const { amount, source, date } = req.body;
     const userId = req.session.userId;
@@ -127,7 +120,6 @@ export const insertIncome = async (req, res) => {
     }
 };
 
-// Modifier un revenu
 export const editIncome = async (req, res) => {
     const { id } = req.params;
     const { amount, source, date } = req.body;
@@ -151,7 +143,6 @@ export const editIncome = async (req, res) => {
     }
 };
 
-// Supprimer un revenu
 export const deleteIncome = async (req, res) => {
     const { id } = req.params;
     try {
@@ -168,7 +159,6 @@ export const deleteIncome = async (req, res) => {
 
 // ====================== EXPENSES ======================
 
-// Récupérer toutes les dépenses du user
 export const getExpenses = async (req, res) => {
     try {
         const db = await connection();
@@ -182,7 +172,6 @@ export const getExpenses = async (req, res) => {
     }
 };
 
-// Somme totale des dépenses du user
 export const getSumExpenses = async (req, res) => {
     try {
         const db = await connection();
@@ -196,7 +185,6 @@ export const getSumExpenses = async (req, res) => {
     }
 };
 
-// Dépenses du mois
 export const getExpensesMonth = async (req, res) => {
     try {
         const db = await connection();
@@ -216,7 +204,6 @@ export const getExpensesMonth = async (req, res) => {
     }
 };
 
-// Somme dépenses du mois
 export const getSumExpensesMonth = async (req, res) => {
     try {
         const db = await connection();
@@ -235,7 +222,6 @@ export const getSumExpensesMonth = async (req, res) => {
     }
 };
 
-// Dépenses sur les 3 derniers mois
 export const getExpensesThreeMonths = async (req, res) => {
     try {
         const db = await connection();
@@ -254,7 +240,6 @@ export const getExpensesThreeMonths = async (req, res) => {
     }
 };
 
-// Somme dépenses sur 3 mois
 export const getSumExpensesThreeMonths = async (req, res) => {
     try {
         const db = await connection();
@@ -272,7 +257,6 @@ export const getSumExpensesThreeMonths = async (req, res) => {
     }
 };
 
-// Ajouter une dépense
 export const insertExpenses = async (req, res) => {
     const { amount, category, date } = req.body;
     const userId = req.session.userId;
@@ -293,7 +277,6 @@ export const insertExpenses = async (req, res) => {
     }
 };
 
-// Modifier une dépense
 export const editExpenses = async (req, res) => {
     const { id } = req.params;
     const { amount, category, date } = req.body;
@@ -317,7 +300,6 @@ export const editExpenses = async (req, res) => {
     }
 };
 
-// Supprimer une dépense
 export const deleteExpenses = async (req, res) => {
     const { id } = req.params;
     try {

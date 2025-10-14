@@ -44,7 +44,6 @@ export const login = async (req, res) => {
         }
 
         req.session.userId = user.id;
-        console.log("✅ Session créée :", req.session);
         req.session.userEmail = user.email;
         
         res.status(200).json({
