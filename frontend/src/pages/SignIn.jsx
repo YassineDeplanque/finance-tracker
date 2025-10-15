@@ -21,7 +21,7 @@ function SignIn() {
             .then((res) => {
                 setEmail("");
                 setPassword("");
-                navigate('/')
+                navigate('/homeco')
             })
             .catch((err) => {
                 setError(err.message);
