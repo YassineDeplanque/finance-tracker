@@ -81,6 +81,9 @@ function Transactions() {
   useEffect(() => { fetchIncome(); fetchTotalIncome(); }, [intervalIncome]);
   useEffect(() => { fetchExpenses(); fetchTotalExpenses(); }, [intervalExpenses]);
 
+  useEffect(() => { fetchIncome(); fetchTotalIncome(); }, [totalIncome]);
+  useEffect(() => { fetchExpenses(); fetchTotalExpenses(); }, [totalExpenses]);
+
   // ====== Add Income ======
   const handleSubmitIncome = () => {
     const newIncome = { amount: incomeAmountAdd, source: incomeSourceAdd, date: incomeDateAdd };
@@ -103,6 +106,8 @@ function Transactions() {
         setExpensesAmountAdd('');
         setExpensesCategopryAdd('');
         setExpensesDateAdd('');
+        fetchTotalExpenses();
+        fetchTotalExpenses();
       })
       .catch((err) => setError(err.message));
   }
@@ -112,6 +117,8 @@ function Transactions() {
     axios.delete(`http://localhost:3000/transaction/income/${id}`, { withCredentials: true })
       .then((res) => {
         setIncome(income.filter(i => i.id !== id));
+        fetchTotalExpenses();
+        fetchTotalExpenses();
       })
       .catch((err) => setError(err.message));
   }
@@ -121,6 +128,8 @@ function Transactions() {
     axios.delete(`http://localhost:3000/transaction/expenses/${id}`, { withCredentials: true })
       .then((res) => {
         setExpenses(expenses.filter(ex => ex.id !== id));
+        fetchTotalExpenses();
+        fetchTotalExpenses();
       })
       .catch((err) => setError(err.message));
   }
@@ -140,6 +149,8 @@ function Transactions() {
       .then(res => {
         fetchIncome();
         setEditingIncomeId(null);
+        fetchTotalExpenses();
+        fetchTotalExpenses();
       })
       .catch(err => setError(err.message));
   }
@@ -159,6 +170,8 @@ function Transactions() {
       .then(res => {
         fetchExpenses();
         setEditingExpensesId(null);
+        fetchTotalExpenses();
+        fetchTotalExpenses();
       })
       .catch(err => setError(err.message));
   }
