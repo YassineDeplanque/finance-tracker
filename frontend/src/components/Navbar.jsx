@@ -42,7 +42,7 @@ function Navbar() {
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-700 rounded-lg bg-gray-800 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-900">
             <li>
               <NavLink
-                to="/"
+                to="/homeco"
                 className={({ isActive }) =>
                   isActive
                     ? 'block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0'
@@ -90,7 +90,7 @@ function Navbar() {
             </li>
             <li>
               <NavLink
-                to="/homedisc"
+                to="/"
                 className={({ isActive }) =>
                   isActive
                     ? 'block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0'
