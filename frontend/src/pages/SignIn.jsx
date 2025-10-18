@@ -13,7 +13,6 @@ function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [input, setInput] = useState(true);
     const [inputType, setInputType] = useState("password");
     const [eye, setEye] = useState("M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12zM12 9a3 3 0 100 6 3 3 0 000-6z");
 

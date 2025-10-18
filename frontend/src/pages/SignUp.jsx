@@ -17,6 +17,9 @@ function SignIn() {
 
     const [error, setError] = useState("");
 
+    const [inputType, setInputType] = useState("password");
+    const [eye, setEye] = useState("M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12zM12 9a3 3 0 100 6 3 3 0 000-6z");
+
     const [showPopup, setShowPopup] = useState(false);
 
     const handleInsert = () => {
@@ -32,6 +35,16 @@ function SignIn() {
             .catch((err) => {
                 setError(err.message);
             })
+    }
+
+    const handlePassword = () => {
+        if (inputType == "password") {
+            setInputType('text');
+            setEye("M3.98 6.52a.75.75 0 0 1 1.06 0l12.44 12.44a.75.75 0 1 1-1.06 1.06l-1.93-1.93A10.93 10.93 0 0 1 12 18.75C5.25 18.75 1.5 12 1.5 12s1.54-2.78 4.28-4.73l-1.8-1.8a.75.75 0 0 1 0-1.06zM12 5.25c6.75 0 10.5 6.75 10.5 6.75s-1.25 2.25-3.53 4.03l-2.04-2.04a4.5 4.5 0 0 0-5.92-5.92L8.94 5.97A10.94 10.94 0 0 1 12 5.25zm0 6a3 3 0 0 1 2.91 2.33l-3.74-3.74A3 3 0 0 1 12 11.25z");
+        } else {
+            setInputType("password");
+            setEye("M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12zM12 9a3 3 0 100 6 3 3 0 000-6z");
+        }
     }
 
     return (
@@ -99,7 +112,7 @@ function SignIn() {
                                 <input
                                     id="password"
                                     name="password"
-                                    type="password"
+                                    type={inputType}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
@@ -112,8 +125,8 @@ function SignIn() {
                                     aria-label="Show / hide password"
                                     className="absolute right-3 top-[38px] inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-400"
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-slate-200">
-                                        <path d="M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12zM12 9a3 3 0 100 6 3 3 0 000-6z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-slate-200" onClick={handlePassword}>
+                                        <path d={eye} />
                                     </svg>
                                 </button>
                             </div>
