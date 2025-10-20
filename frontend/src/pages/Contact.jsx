@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef } from "react";
 import emailjs from '@emailjs/browser';
 //npm install --save @emailjs/browser
 
@@ -7,6 +7,25 @@ const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
 const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
 
 function Contact() {
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(serviceId, templateId, form.current, {
+        publicKey: publicKey,
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+        },
+      );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 antialiased flex items-center justify-center p-4">
@@ -21,7 +40,7 @@ function Contact() {
             </p>
           </header>
 
-          <form className="flex flex-col gap-4">
+          <form ref={form} onSubmit={sendEmail} className="flex flex-col gap-4">
             <textarea
               name="message"
               placeholder="Your message..."
