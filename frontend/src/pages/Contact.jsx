@@ -1,4 +1,10 @@
 import { useState } from "react";
+import emailjs from '@emailjs/browser';
+//npm install --save @emailjs/browser
+
+const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
 
 function Contact() {
 
