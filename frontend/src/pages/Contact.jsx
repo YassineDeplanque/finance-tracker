@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import emailjs from '@emailjs/browser';
 //npm install --save @emailjs/browser
 
@@ -10,6 +10,8 @@ function Contact() {
 
   const form = useRef();
 
+  const [showPopup, setShowPopup] = useState(false);
+
   const sendEmail = (e) => {
     e.preventDefault();
 
@@ -20,6 +22,7 @@ function Contact() {
       .then(
         () => {
           console.log('SUCCESS!');
+          setShowPopup(true)
         },
         (error) => {
           console.log('FAILED...', error.text);
@@ -58,7 +61,26 @@ function Contact() {
         </div>
         <p className="text-center text-xs text-slate-400 mt-6">© 2025 Yassine Deplanque</p>
       </div>
+      {showPopup && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <div className="bg-gray-900 text-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+                        <h2 className="text-xl font-bold mb-4">Notification</h2>
+                        <p>Email sent !</p>
+
+                        <div className="mt-4 flex gap-4 justify-center">
+                            <button
+                                onClick={() => setShowPopup(false)}
+                                className="px-4 py-2 bg-indigo-500 rounded hover:bg-indigo-600"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            )}
     </div>
+    
   );
 }
 
