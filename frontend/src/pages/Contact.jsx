@@ -11,6 +11,7 @@ function Contact() {
   const form = useRef();
 
   const [showPopup, setShowPopup] = useState(false);
+  const [message, setMessage] = useState('');
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -22,7 +23,8 @@ function Contact() {
       .then(
         () => {
           console.log('SUCCESS!');
-          setShowPopup(true)
+          setShowPopup(true);
+          setMessage('');
         },
         (error) => {
           console.log('FAILED...', error.text);
@@ -50,6 +52,8 @@ function Contact() {
               rows="5"
               required
               className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              value={message} 
+              onChange={(e)=>setMessage(e.target.value)}
             ></textarea>
             <button
               type="submit"
