@@ -1,53 +1,54 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import NavbarDisconnected from '../components/NavbarDisconnected';
+import { useAuth } from '../context/AuthContext';
 
 function SignIn() {
-
     const navigate = useNavigate();
-
-    const [open, setOpen] = useState(false);
+    const { setUser } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const [inputType, setInputType] = useState("password");
     const [eye, setEye] = useState("M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12zM12 9a3 3 0 100 6 3 3 0 000-6z");
-
     const [error, setError] = useState("");
 
-    const handleLogin = () => {
-        const newLogin = { email: email, password: password };
-        axios.post("http://localhost:3000/user/login", newLogin)
-            .then((res) => {
-                setEmail("");
-                setPassword("");
-                navigate('/homeco')
-            })
-            .catch((err) => {
-                setError(err.message);
-                if (email === "" || password === "") {
-                    setError("All fields must be filled.");
-                } else {
-                    setError("Email or password wrong.");
-                }
+    const handleLogin = async () => {
+        if (!email || !password) {
+            setError("All fields must be filled.");
+            return;
+        }
 
-            })
-    }
+        try {
+            const newLogin = { email, password };
+            const res = await axios.post("http://localhost:3000/user/login", newLogin);
+
+            const loggedUser = res.data.user || { email: email }; 
+
+            setUser(loggedUser);
+
+            setEmail("");
+            setPassword("");
+
+            navigate('/homeco');
+        } catch (err) {
+            console.error(err);
+            setError("Email or password wrong.");
+        }
+    };
 
     const handlePassword = () => {
-        if (inputType == "password") {
-            setInputType('text');
+        if (inputType === "password") {
+            setInputType("text");
             setEye("M3.98 6.52a.75.75 0 0 1 1.06 0l12.44 12.44a.75.75 0 1 1-1.06 1.06l-1.93-1.93A10.93 10.93 0 0 1 12 18.75C5.25 18.75 1.5 12 1.5 12s1.54-2.78 4.28-4.73l-1.8-1.8a.75.75 0 0 1 0-1.06zM12 5.25c6.75 0 10.5 6.75 10.5 6.75s-1.25 2.25-3.53 4.03l-2.04-2.04a4.5 4.5 0 0 0-5.92-5.92L8.94 5.97A10.94 10.94 0 0 1 12 5.25zm0 6a3 3 0 0 1 2.91 2.33l-3.74-3.74A3 3 0 0 1 12 11.25z");
         } else {
             setInputType("password");
             setEye("M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12zM12 9a3 3 0 100 6 3 3 0 000-6z");
         }
-    }
-    return (
+    };
 
+    return (
         <div className="bg-white border-gray-200 dark:bg-gray-900">
             <NavbarDisconnected />
 
@@ -97,11 +98,11 @@ function SignIn() {
                                     type="button"
                                     aria-label="Show / hide password"
                                     className="absolute right-3 top-[38px] inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                                    onClick={handlePassword}
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-slate-200" onClick={handlePassword}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-slate-200">
                                         <path d={eye} />
                                     </svg>
-
                                 </button>
                             </div>
 
@@ -113,25 +114,22 @@ function SignIn() {
                                 <a href="#" className="text-sm text-indigo-300 hover:text-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 rounded">Forgot password?</a>
                             </div>
 
-                            <button onClick={() => handleLogin()} className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                            <button
+                                onClick={handleLogin}
+                                className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                            >
                                 Sign in
                             </button>
-                            {error !== "" ? (
-                                <div>
-                                    <p className='text-red-500'>
-                                        {error}
-                                    </p>
-                                </div>
-                            ) : (
-                                <div></div>
-                            )}
+
+                            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                         </div>
+
                         <p className="mt-6 text-center text-sm text-slate-400">
-                            Don’t have an account ?
+                            Don’t have an account?{" "}
                             <NavLink
                                 className="text-indigo-300 hover:text-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 rounded"
                                 to='/signup'>
-                                - Sign up
+                                Sign up
                             </NavLink>
                         </p>
                     </div>
@@ -141,7 +139,6 @@ function SignIn() {
             </div>
         </div>
     );
-
 }
 
 export default SignIn;
