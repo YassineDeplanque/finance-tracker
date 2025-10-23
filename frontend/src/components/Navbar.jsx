@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 import logo from '../assets/logo.png';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+
+  const destroySession = () => {
+    axios.post("http://localhost:3000/user/logout")
+  }
 
   return (
     <nav className="bg-gray-900 border-gray-700">
@@ -91,6 +96,7 @@ function Navbar() {
             <li>
               <NavLink
                 to="/"
+                onClick={() => destroySession()}
                 className={({ isActive }) =>
                   isActive
                     ? 'block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0'
