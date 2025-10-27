@@ -129,7 +129,7 @@ function Dashboard() {
   <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 antialiased p-6">
     <div className="max-w-6xl mx-auto space-y-10">
 
-      <h1 className="text-3xl font-bold mb-4 text-white">📊 Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-4 text-white">Dashboard</h1>
 
       {/* Line Chart */}
       <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700 w-full h-[400px] md:h-[500px]">

@@ -182,7 +182,7 @@ return (
       
       {/* Incomes */}
       <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700">
-        <h1 className="text-3xl font-bold text-white mb-4">💰 Incomes</h1>
+        <h1 className="text-3xl font-bold text-white mb-4">Incomes</h1>
         <div className="flex items-center justify-between mb-4">
           <select
             className="border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -205,7 +205,7 @@ return (
               className="flex justify-between items-center bg-slate-900/60 shadow rounded-lg p-3 border border-slate-700"
             >
               <span className="text-slate-200">
-                💰 {i.amount} € — {i.source} — {new Date(i.date).toLocaleDateString()}
+                {i.amount} € — {i.source} — {new Date(i.date).toLocaleDateString()}
               </span>
               {editingIncomeId === i.id ? (
                 <div className="flex gap-2 flex-wrap">
@@ -261,7 +261,7 @@ return (
 
       {/* Expenses */}
       <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700">
-        <h1 className="text-3xl font-bold text-white mb-4">💸 Expenses</h1>
+        <h1 className="text-3xl font-bold text-white mb-4">Expenses</h1>
         <div className="flex items-center justify-between mb-4">
           <select
             className="border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
@@ -284,7 +284,7 @@ return (
               className="flex justify-between items-center bg-slate-900/60 shadow rounded-lg p-3 border border-slate-700"
             >
               <span className="text-slate-200">
-                💸 {ex.amount} € — {ex.category} — {new Date(ex.date).toLocaleDateString()}
+                {ex.amount} € — {ex.category} — {new Date(ex.date).toLocaleDateString()}
               </span>
               {editingExpensesId === ex.id ? (
                 <div className="flex gap-2 flex-wrap">
@@ -347,7 +347,7 @@ return (
 
       {/* Insert incomes */}
       <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700">
-        <h1 className="text-2xl font-bold text-white mb-4">➕ Insert incomes</h1>
+        <h1 className="text-2xl font-bold text-white mb-4">Insert incomes</h1>
         <div className="flex flex-col md:flex-row gap-3">
           <input
             className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
@@ -378,7 +378,7 @@ return (
 
       {/* Insert expenses */}
       <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700">
-        <h1 className="text-2xl font-bold text-white mb-4">➕ Insert expenses</h1>
+        <h1 className="text-2xl font-bold text-white mb-4">Insert expenses</h1>
         <div className="flex flex-col md:flex-row gap-3">
           <input
             className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
