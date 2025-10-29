@@ -177,7 +177,7 @@ function Dashboard() {
       </div>
 
       {/* Doughnut + Bar Charts */}
-      <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700 w-full h-auto md:h-[500px]">
+      <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700 w-full h-auto md:h-[700px]">
         <div className="flex flex-col md:flex-row gap-6 h-full">
 
           {/* Doughnut Chart */}
