@@ -49,21 +49,21 @@ function Dashboard() {
             });
     };
 
-    const fetchTotalIncome = () => {
-        axios.get(`http://localhost:3000/transaction/income/sum${intervalBar}`)
-            .then((res) => {
-                setTotalIncome(res.data[0].total);
-                console.log('total : ', totalIncome)
-            })
-            .catch((err) => {
-                setError(err.message);
-            });
-    };
+const fetchTotalIncome = () => {
+    axios.get(`http://localhost:3000/transaction/income/sum${intervalBar}`)
+        .then((res) => {
+                setTotalIncome(res.data.total);
+        })
+        .catch((err) => {
+            setError(err.message);
+        });
+};
+
 
     const fetchTotalExpenses = () => {
         axios.get(`http://localhost:3000/transaction/expenses/sum${intervalBar}`)
             .then((res) => {
-                setTotalExpenses(res.data[0].total);
+                setTotalExpenses(res.data.total);
             })
             .catch((err) => {
                 setError(err.message);
