@@ -81,8 +81,8 @@ function Transactions() {
   useEffect(() => { fetchIncome(); fetchTotalIncome(); }, [intervalIncome]);
   useEffect(() => { fetchExpenses(); fetchTotalExpenses(); }, [intervalExpenses]);
 
-  useEffect(() => { fetchIncome(); fetchTotalIncome(); }, [totalIncome]);
-  useEffect(() => { fetchExpenses(); fetchTotalExpenses(); }, [totalExpenses]);
+  // useEffect(() => { fetchIncome(); fetchTotalIncome(); }, [totalIncome]);
+  // useEffect(() => { fetchExpenses(); fetchTotalExpenses(); }, [totalExpenses]);
 
   // ====== Add Income ======
   const handleSubmitIncome = () => {
@@ -93,6 +93,7 @@ function Transactions() {
         setIncomeAmountAdd('');
         setIncomeSourceAdd('');
         setIncomeDateAdd('');
+        fetchTotalIncome();
       })
       .catch((err) => setError(err.message));
   }
@@ -106,7 +107,6 @@ function Transactions() {
         setExpensesAmountAdd('');
         setExpensesCategopryAdd('');
         setExpensesDateAdd('');
-        fetchTotalExpenses();
         fetchTotalExpenses();
       })
       .catch((err) => setError(err.message));
