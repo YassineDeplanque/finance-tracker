@@ -22,7 +22,8 @@ function SignIn() {
 
     const [showPopup, setShowPopup] = useState(false);
 
-    const handleInsert = () => {
+    const handleInsert = (event) => {
+        event.preventDefault();
         const newLogin = { name: name, lastname: lastname, email: email, password: password };
         axios.post("http://localhost:3000/user", newLogin)
             .then((res) => {
@@ -62,78 +63,79 @@ function SignIn() {
                             <h1 className="mt-4 text-2xl font-semibold tracking-tight">Sign up</h1>
                             <p className="text-slate-300 text-sm mt-1">Create your account with ease</p>
                         </header>
+                        <form onSubmit={handleInsert}>
+                            <div action="#" method="post" className="space-y-5">
+                                <div>
+                                    <label className="block text-sm text-slate-300">Name</label>
+                                    <input
+                                        id="name"
+                                        name="name"
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                        autoComplete="name"
+                                        placeholder="Name"
+                                        className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="email" className="block text-sm text-slate-300">Last name</label>
+                                    <input
+                                        id="lastname"
+                                        name="lastname"
+                                        type="text"
+                                        value={lastname}
+                                        onChange={(e) => setLastame(e.target.value)}
+                                        required
+                                        autoComplete="lastname"
+                                        placeholder="Last name"
+                                        className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="email" className="block text-sm text-slate-300">Email address</label>
+                                    <input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                        autoComplete="email"
+                                        placeholder="you@example.com"
+                                        className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
+                                    />
+                                </div>
 
-                        <div action="#" method="post" className="space-y-5">
-                            <div>
-                                <label className="block text-sm text-slate-300">Name</label>
-                                <input
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                    autoComplete="name"
-                                    placeholder="Name"
-                                    className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="email" className="block text-sm text-slate-300">Last name</label>
-                                <input
-                                    id="lastname"
-                                    name="lastname"
-                                    type="text"
-                                    value={lastname}
-                                    onChange={(e) => setLastame(e.target.value)}
-                                    required
-                                    autoComplete="lastname"
-                                    placeholder="Last name"
-                                    className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="email" className="block text-sm text-slate-300">Email address</label>
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                    autoComplete="email"
-                                    placeholder="you@example.com"
-                                    className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
-                                />
-                            </div>
-
-                            <div className="relative">
-                                <label htmlFor="password" className="block text-sm text-slate-300">Password</label>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type={inputType}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    autoComplete="current-password"
-                                    placeholder="••••••••"
-                                    className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 pr-12 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
-                                />
-                                <button
-                                    type="button"
-                                    aria-label="Show / hide password"
-                                    className="absolute right-3 top-[38px] inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-slate-200" onClick={handlePassword}>
-                                        <path d={eye} />
-                                    </svg>
+                                <div className="relative">
+                                    <label htmlFor="password" className="block text-sm text-slate-300">Password</label>
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type={inputType}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                        autoComplete="current-password"
+                                        placeholder="••••••••"
+                                        className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 placeholder-slate-400 border border-white/10 px-4 py-3 pr-12 shadow-inner outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 ring-offset-1 ring-offset-slate-900"
+                                    />
+                                    <button
+                                        type="button"
+                                        aria-label="Show / hide password"
+                                        className="absolute right-3 top-[38px] inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-slate-200" onClick={handlePassword}>
+                                            <path d={eye} />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button type="submit" className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                                    Sign up
                                 </button>
                             </div>
-                            <button onClick={() => handleInsert()} type="submit" className="w-full rounded-xl bg-indigo-500 px-4 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-400 active:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                                Sign up
-                            </button>
-                        </div>
+                        </form>
 
                         <p className="mt-6 text-center text-sm text-slate-400">
                             Already have an account ?

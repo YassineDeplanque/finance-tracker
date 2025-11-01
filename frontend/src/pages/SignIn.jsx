@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import NavbarDisconnected from '../components/NavbarDisconnected';
@@ -14,7 +14,8 @@ function SignIn() {
     const [eye, setEye] = useState("M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12zM12 9a3 3 0 100 6 3 3 0 000-6z");
     const [error, setError] = useState("");
 
-    const handleLogin = async () => {
+    const handleLogin = async (event) => {
+        event.preventDefault();
         if (!email || !password) {
             setError("All fields must be filled.");
             return;
@@ -65,6 +66,7 @@ function SignIn() {
                             <p className="text-slate-300 text-sm mt-1">Access your account with ease</p>
                         </header>
 
+<form onSubmit={handlePassword}>
                         <div className="space-y-5">
                             <div>
                                 <label htmlFor="email" className="block text-sm text-slate-300">Email address</label>
@@ -98,7 +100,6 @@ function SignIn() {
                                     type="button"
                                     aria-label="Show / hide password"
                                     className="absolute right-3 top-[38px] inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                                    onClick={handlePassword}
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-slate-200">
                                         <path d={eye} />
@@ -123,6 +124,7 @@ function SignIn() {
 
                             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                         </div>
+                        </form>
 
                         <p className="mt-6 text-center text-sm text-slate-400">
                             Don’t have an account?{" "}
