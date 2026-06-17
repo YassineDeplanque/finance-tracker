@@ -363,6 +363,9 @@ return (
         <h1 className="text-2xl font-bold text-white mb-4">Insert incomes</h1>
         <div className="flex flex-col md:flex-row gap-3">
           <input
+            type="number"
+            step="0.01"
+            min="0"
             className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
             placeholder="Amount"
             value={incomeAmountAdd}
@@ -394,6 +397,9 @@ return (
         <h1 className="text-2xl font-bold text-white mb-4">Insert expenses</h1>
         <div className="flex flex-col md:flex-row gap-3">
           <input
+            type="number"
+            step="0.01"
+            min="0"
             className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
             placeholder="Amount"
             value={expensesAmountAdd}
