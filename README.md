@@ -111,17 +111,21 @@ Planned features:
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/your-username/finance-tracker.git
+
 2. Backend setup
 cd backend
 npm install
+
 Create a .env file:
 DB_HOST=...
 DB_USER=...
 DB_PASS=...
 DB_NAME=...
 SESSION_SECRET=...
+
 Run backend:
 npm run dev
+
 3. Frontend setup
 cd frontend
 npm install
