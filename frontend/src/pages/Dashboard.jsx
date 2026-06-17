@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Chart as ChartJS } from "chart.js/auto";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 
-
 function Dashboard() {
 
     const [income, setIncome] = useState([]);
@@ -22,71 +21,47 @@ function Dashboard() {
         axios.get(`http://localhost:3000/transaction/income${intervalIncome}`)
             .then((res) => {
                 setIncome(res.data);
-                console.log(intervalIncome)
             })
-            .catch((err) => {
-                setError(err.message);
-            });
+            .catch((err) => setError(err.message));
     };
 
     const fetchExpenses = () => {
         axios.get(`http://localhost:3000/transaction/expenses${intervalIncome}`)
-            .then((res) => {
-                setExpenses(res.data);
-            })
-            .catch((err) => {
-                setError(err.message);
-            });
+            .then((res) => setExpenses(res.data))
+            .catch((err) => setError(err.message));
     };
 
     const fetchExpensesDough = () => {
         axios.get(`http://localhost:3000/transaction/expenses${intervalExpenses}`)
-            .then((res) => {
-                setExpensesDough(res.data);
-            })
-            .catch((err) => {
-                setError(err.message);
-            });
+            .then((res) => setExpensesDough(res.data))
+            .catch((err) => setError(err.message));
     };
 
-const fetchTotalIncome = () => {
-    axios.get(`http://localhost:3000/transaction/income/sum${intervalBar}`)
-        .then((res) => {
-                setTotalIncome(res.data.total);
-        })
-        .catch((err) => {
-            setError(err.message);
-        });
-};
-
+    const fetchTotalIncome = () => {
+        axios.get(`http://localhost:3000/transaction/income/sum${intervalBar}`)
+            .then((res) => setTotalIncome(res.data.total))
+            .catch((err) => setError(err.message));
+    };
 
     const fetchTotalExpenses = () => {
         axios.get(`http://localhost:3000/transaction/expenses/sum${intervalBar}`)
-            .then((res) => {
-                setTotalExpenses(res.data.total);
-            })
-            .catch((err) => {
-                setError(err.message);
-            });
+            .then((res) => setTotalExpenses(res.data.total))
+            .catch((err) => setError(err.message));
     };
 
     useEffect(() => {
         fetchIncome();
         fetchExpenses();
-    }, [intervalIncome])
+    }, [intervalIncome]);
 
     useEffect(() => {
         fetchExpensesDough();
-    }, [intervalExpenses])
+    }, [intervalExpenses]);
 
     useEffect(() => {
         fetchTotalIncome();
-        console.log('total : ', totalIncome)
-    }, [intervalBar])
-
-    useEffect(() => {
         fetchTotalExpenses();
-    }, [intervalBar])
+    }, [intervalBar]);
 
     const allDates = Array.from(
         new Set([
@@ -98,6 +73,7 @@ const fetchTotalIncome = () => {
     const incomeData = allDates.map(
         (date) => income.find((i) => i.date === date)?.amount || 0
     );
+
     const expensesData = allDates.map(
         (date) => expenses.find((e) => e.date === date)?.amount || 0
     );
@@ -106,162 +82,137 @@ const fetchTotalIncome = () => {
         new Date(date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })
     );
 
-    // Grouper les dépenses par catégorie
     const groupedExpenses = expensesDough.reduce((acc, ex) => {
         const cat = ex.category || "Autres";
-        if (acc[cat]) {
-            acc[cat] += ex.amount;
-        } else {
-            acc[cat] = ex.amount;
-        }
+        acc[cat] = (acc[cat] || 0) + ex.amount;
         return acc;
     }, {});
 
-    // Labels = catégories
     const doughLabels = Object.keys(groupedExpenses);
-
-    // Data = somme des montants par catégorie
     const doughData = Object.values(groupedExpenses);
 
-
-
     return (
-  <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 antialiased p-6">
-    <div className="max-w-6xl mx-auto space-y-10">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 p-6">
+            <div className="max-w-6xl mx-auto space-y-10">
 
-      <h1 className="text-3xl font-bold mb-4 text-white">Dashboard</h1>
+                <h1 className="text-3xl font-bold">Dashboard</h1>
 
-      {/* Line Chart */}
-      <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700 w-full h-[400px] md:h-[500px]">
-        <select
-          className="mb-4 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
-          value={intervalIncome}
-          onChange={(e) => setIntervalIncome(e.target.value)}
-        >
-          <option value='/year'>This year</option>
-          <option value='/three'>Last 3 months</option>
-          <option value='/month'>This month</option>
-        </select>
-        <Line
-          data={{
-            labels: labels,
-            datasets: [
-              {
-                label: "Income",
-                data: incomeData,
-                backgroundColor: "rgba(6, 79, 240, 0.2)",
-                borderColor: "#064FF0",
-                borderWidth: 2,
-                tension: 0.3,
-              },
-              {
-                label: "Expenses",
-                data: expensesData,
-                backgroundColor: "rgba(240, 6, 6, 0.2)",
-                borderColor: "#F00606",
-                borderWidth: 2,
-                tension: 0.3,
-              },
-            ],
-          }}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { position: "top", labels: { color: 'white' } } },
-            scales: {
-              x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-              y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' }, title: { display: true, text: "Amount (€)", color: 'white' }, beginAtZero: true },
-            },
-          }}
-        />
-      </div>
+                {/* LINE */}
+                <div className="bg-slate-800/70 rounded-2xl p-6 border border-slate-700 h-[450px]">
+                    <select
+                        className="mb-4 p-2 bg-slate-900/70 rounded"
+                        value={intervalIncome}
+                        onChange={(e) => setIntervalIncome(e.target.value)}
+                    >
+                        <option value='/year'>This year</option>
+                        <option value='/three'>Last 3 months</option>
+                        <option value='/month'>This month</option>
+                    </select>
 
-      {/* Doughnut + Bar Charts */}
-      <div className="bg-slate-800/70 shadow-lg rounded-2xl p-6 border border-slate-700 w-full h-auto md:h-[700px]">
-        <div className="flex flex-col md:flex-row gap-6 h-full">
+                    <Line
+                        data={{
+                            labels,
+                            datasets: [
+                                {
+                                    label: "Income",
+                                    data: incomeData,
+                                    borderColor: "#064FF0",
+                                    tension: 0.3,
+                                },
+                                {
+                                    label: "Expenses",
+                                    data: expensesData,
+                                    borderColor: "#F00606",
+                                    tension: 0.3,
+                                },
+                            ],
+                        }}
+                        options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { labels: { color: "white" } } },
+                            scales: {
+                                x: { ticks: { color: "white" } },
+                                y: { ticks: { color: "white" }, beginAtZero: true },
+                            },
+                        }}
+                    />
+                </div>
 
-          {/* Doughnut Chart */}
-          <div className="flex-1 flex flex-col justify-start min-w-[300px]">
-            <select
-              className="w-40 mb-4 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
-              value={intervalExpenses}
-              onChange={(e) => setIntervalExpenses(e.target.value)}
-            >
-              <option value='/year'>This year</option>
-              <option value='/three'>Last 3 months</option>
-              <option value='/month'>This month</option>
-            </select>
-            <div className="w-full h-[250px] md:h-full">
-              <Doughnut
-                data={{
-                  labels: doughLabels,
-                  datasets: [
-                    {
-                      label: "Expenses",
-                      data: doughData,
-                      backgroundColor: doughLabels.map(
-                        (_, i) => `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
-                      ),
-                      borderRadius: 5,
-                      borderWidth: 2,
-                    },
-                  ],
-                }}
-                options={{
-                  plugins: { legend: { labels: { color: 'white' } } },
-                }}
-              />
+                {/* DOUGH + BAR */}
+                <div className="bg-slate-800/70 rounded-2xl p-6 border border-slate-700">
+                    <div className="flex flex-col md:flex-row gap-6">
+
+                        {/* DOUGHNUT */}
+                        <div className="flex-1 h-[320px]">
+                            <select
+                                className="mb-4 p-2 bg-slate-900/70 rounded"
+                                value={intervalExpenses}
+                                onChange={(e) => setIntervalExpenses(e.target.value)}
+                            >
+                                <option value='/year'>This year</option>
+                                <option value='/three'>Last 3 months</option>
+                                <option value='/month'>This month</option>
+                            </select>
+
+                            <Doughnut
+                                data={{
+                                    labels: doughLabels,
+                                    datasets: [{
+                                        data: doughData,
+                                        backgroundColor: doughLabels.map(
+                                            (_, i) => `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
+                                        ),
+                                    }],
+                                }}
+                                options={{
+                                    plugins: { legend: { labels: { color: "white" } } },
+                                }}
+                            />
+                        </div>
+
+                        {/* BAR CHART FIX ICI */}
+                        <div className="flex-1 flex flex-col">
+                            <select
+                                className="mb-4 p-2 bg-slate-900/70 rounded"
+                                value={intervalBar}
+                                onChange={(e) => setIntervalBar(e.target.value)}
+                            >
+                                <option value='/year'>This year</option>
+                                <option value='/three'>Last 3 months</option>
+                                <option value='/month'>This month</option>
+                            </select>
+
+                            {/* ✅ FIX RESPONSIVE ICI */}
+                            <div className="relative w-full h-[280px] sm:h-[320px] md:h-[360px] lg:h-[420px]">
+                                <Bar
+                                    data={{
+                                        labels: ["Income", "Expenses"],
+                                        datasets: [{
+                                            label: "Total",
+                                            data: [totalIncome, totalExpenses],
+                                            backgroundColor: ['#ADD8E6', '#FF0000'],
+                                        }],
+                                    }}
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        plugins: { legend: { display: false } },
+                                        scales: {
+                                            x: { ticks: { color: "white" } },
+                                            y: { ticks: { color: "white" }, beginAtZero: true },
+                                        },
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
-          </div>
-
-          {/* Bar Chart */}
-          <div className="flex-1 flex flex-col justify-start min-w-[300px]">
-            <select
-              className="w-40 mb-4 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100 focus:ring-2 focus:ring-blue-400"
-              value={intervalBar}
-              onChange={(e) => setIntervalBar(e.target.value)}
-            >
-              <option value='/year'>This year</option>
-              <option value='/three'>Last 3 months</option>
-              <option value='/month'>This month</option>
-            </select>
-            <div className="w-full h-[250px] md:h-full">
-              <Bar
-                data={{
-                  labels: ["Income", "Expenses"],
-                  datasets: [
-                    {
-                      label: "Total",
-                      data: [totalIncome, totalExpenses],
-                      backgroundColor: ['#ADD8E6', '#FF0000'],
-                      borderRadius: 5,
-                      borderWidth: 2,
-                    },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: { legend: { display: false } },
-                  scales: {
-                    y: { beginAtZero: true, title: { display: true, text: "Amount (€)", color: 'white' }, ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                    x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                  },
-                }}
-              />
-            </div>
-          </div>
-
         </div>
-      </div>
-
-    </div>
-    <p className="text-center text-xs text-slate-400 mt-20 mb-10">
-          © 2025 Yassine Deplanque
-        </p>
-  </div>
-);
-
+    );
 }
 
 export default Dashboard;
