@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { useState, useEffect } from "react";
-import { Chart as ChartJS } from "chart.js/auto";
+import api from "../api/axios"; // ⚠️ adapte le chemin si besoin
 import { Bar, Doughnut, Line } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
 
 function Dashboard() {
 
@@ -12,43 +12,43 @@ function Dashboard() {
 
     const [intervalIncome, setIntervalIncome] = useState('/year');
     const [intervalExpenses, setIntervalExpenses] = useState('/month');
-    const [intervalBar, setIntervalBar] = useState('/month')
+    const [intervalBar, setIntervalBar] = useState('/month');
 
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpenses, setTotalExpenses] = useState(0);
 
+    // ===== FETCH =====
     const fetchIncome = () => {
-        axios.get(`http://localhost:3000/transaction/income${intervalIncome}`)
-            .then((res) => {
-                setIncome(res.data);
-            })
-            .catch((err) => setError(err.message));
+        api.get(`/transaction/income${intervalIncome}`)
+            .then(res => setIncome(res.data))
+            .catch(err => setError(err.message));
     };
 
     const fetchExpenses = () => {
-        axios.get(`http://localhost:3000/transaction/expenses${intervalIncome}`)
-            .then((res) => setExpenses(res.data))
-            .catch((err) => setError(err.message));
+        api.get(`/transaction/expenses${intervalIncome}`)
+            .then(res => setExpenses(res.data))
+            .catch(err => setError(err.message));
     };
 
     const fetchExpensesDough = () => {
-        axios.get(`http://localhost:3000/transaction/expenses${intervalExpenses}`)
-            .then((res) => setExpensesDough(res.data))
-            .catch((err) => setError(err.message));
+        api.get(`/transaction/expenses${intervalExpenses}`)
+            .then(res => setExpensesDough(res.data))
+            .catch(err => setError(err.message));
     };
 
     const fetchTotalIncome = () => {
-        axios.get(`http://localhost:3000/transaction/income/sum${intervalBar}`)
-            .then((res) => setTotalIncome(res.data.total))
-            .catch((err) => setError(err.message));
+        api.get(`/transaction/income/sum${intervalBar}`)
+            .then(res => setTotalIncome(res.data.total ?? 0))
+            .catch(err => setError(err.message));
     };
 
     const fetchTotalExpenses = () => {
-        axios.get(`http://localhost:3000/transaction/expenses/sum${intervalBar}`)
-            .then((res) => setTotalExpenses(res.data.total))
-            .catch((err) => setError(err.message));
+        api.get(`/transaction/expenses/sum${intervalBar}`)
+            .then(res => setTotalExpenses(res.data.total ?? 0))
+            .catch(err => setError(err.message));
     };
 
+    // ===== EFFECTS =====
     useEffect(() => {
         fetchIncome();
         fetchExpenses();
@@ -63,23 +63,27 @@ function Dashboard() {
         fetchTotalExpenses();
     }, [intervalBar]);
 
+    // ===== DATA PROCESSING =====
     const allDates = Array.from(
         new Set([
-            ...income.map((i) => i.date),
-            ...expenses.map((e) => e.date),
+            ...income.map(i => i.date),
+            ...expenses.map(e => e.date),
         ])
     ).sort((a, b) => new Date(a) - new Date(b));
 
     const incomeData = allDates.map(
-        (date) => income.find((i) => i.date === date)?.amount || 0
+        date => income.find(i => i.date === date)?.amount || 0
     );
 
     const expensesData = allDates.map(
-        (date) => expenses.find((e) => e.date === date)?.amount || 0
+        date => expenses.find(e => e.date === date)?.amount || 0
     );
 
-    const labels = allDates.map((date) =>
-        new Date(date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })
+    const labels = allDates.map(date =>
+        new Date(date).toLocaleDateString("fr-FR", {
+            day: "2-digit",
+            month: "2-digit"
+        })
     );
 
     const groupedExpenses = expensesDough.reduce((acc, ex) => {
@@ -104,9 +108,9 @@ function Dashboard() {
                         value={intervalIncome}
                         onChange={(e) => setIntervalIncome(e.target.value)}
                     >
-                        <option value='/year'>This year</option>
-                        <option value='/three'>Last 3 months</option>
-                        <option value='/month'>This month</option>
+                        <option value="/year">This year</option>
+                        <option value="/three">Last 3 months</option>
+                        <option value="/month">This month</option>
                     </select>
 
                     <Line
@@ -130,10 +134,15 @@ function Dashboard() {
                         options={{
                             responsive: true,
                             maintainAspectRatio: false,
-                            plugins: { legend: { labels: { color: "white" } } },
+                            plugins: {
+                                legend: { labels: { color: "white" } }
+                            },
                             scales: {
                                 x: { ticks: { color: "white" } },
-                                y: { ticks: { color: "white" }, beginAtZero: true },
+                                y: {
+                                    ticks: { color: "white" },
+                                    beginAtZero: true
+                                },
                             },
                         }}
                     />
@@ -150,9 +159,9 @@ function Dashboard() {
                                 value={intervalExpenses}
                                 onChange={(e) => setIntervalExpenses(e.target.value)}
                             >
-                                <option value='/year'>This year</option>
-                                <option value='/three'>Last 3 months</option>
-                                <option value='/month'>This month</option>
+                                <option value="/year">This year</option>
+                                <option value="/three">Last 3 months</option>
+                                <option value="/month">This month</option>
                             </select>
 
                             <Doughnut
@@ -161,29 +170,31 @@ function Dashboard() {
                                     datasets: [{
                                         data: doughData,
                                         backgroundColor: doughLabels.map(
-                                            (_, i) => `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
+                                            (_, i) =>
+                                                `hsl(${(i * 360) / doughLabels.length}, 70%, 60%)`
                                         ),
                                     }],
                                 }}
                                 options={{
-                                    plugins: { legend: { labels: { color: "white" } } },
+                                    plugins: {
+                                        legend: { labels: { color: "white" } }
+                                    },
                                 }}
                             />
                         </div>
 
-                        {/* BAR CHART FIX ICI */}
+                        {/* BAR */}
                         <div className="flex-1 flex flex-col">
                             <select
                                 className="mb-4 p-2 bg-slate-900/70 rounded"
                                 value={intervalBar}
                                 onChange={(e) => setIntervalBar(e.target.value)}
                             >
-                                <option value='/year'>This year</option>
-                                <option value='/three'>Last 3 months</option>
-                                <option value='/month'>This month</option>
+                                <option value="/year">This year</option>
+                                <option value="/three">Last 3 months</option>
+                                <option value="/month">This month</option>
                             </select>
 
-                            {/* ✅ FIX RESPONSIVE ICI */}
                             <div className="relative w-full h-[280px] sm:h-[320px] md:h-[360px] lg:h-[420px]">
                                 <Bar
                                     data={{
@@ -191,16 +202,21 @@ function Dashboard() {
                                         datasets: [{
                                             label: "Total",
                                             data: [totalIncome, totalExpenses],
-                                            backgroundColor: ['#ADD8E6', '#FF0000'],
+                                            backgroundColor: ["#ADD8E6", "#FF0000"],
                                         }],
                                     }}
                                     options={{
                                         responsive: true,
                                         maintainAspectRatio: false,
-                                        plugins: { legend: { display: false } },
+                                        plugins: {
+                                            legend: { display: false }
+                                        },
                                         scales: {
                                             x: { ticks: { color: "white" } },
-                                            y: { ticks: { color: "white" }, beginAtZero: true },
+                                            y: {
+                                                ticks: { color: "white" },
+                                                beginAtZero: true
+                                            },
                                         },
                                     }}
                                 />

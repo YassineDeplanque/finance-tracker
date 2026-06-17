@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/axios';
 import NavbarDisconnected from '../components/NavbarDisconnected';
 import { useAuth } from '../context/AuthContext';
 
@@ -24,7 +24,9 @@ function SignIn() {
 
         try {
             const newLogin = { email, password };
-            const res = await axios.post("http://localhost:3000/user/login", newLogin);
+
+            // ✅ CHANGÉ ICI
+            const res = await api.post("/user/login", newLogin);
 
             const loggedUser = res.data.user || { email: email };
 
@@ -59,17 +61,14 @@ function SignIn() {
                     <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8">
 
                         <header className="text-center mb-8">
-                            <div className="mx-auto h-12 w-12 rounded-2xl bg-white/10 grid place-items-center shadow">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6 text-slate-100">
-                                    <path fillRule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v2.25H6A2.25 2.25 0 003.75 11.25v7.5A2.25 2.25 0 006 21h12a2.25 2.25 0 002.25-2.25v-7.5A2.25 2.25 0 0018 9H17.25V6.75A5.25 5.25 0 0012 1.5zm3.75 6.75V9H8.25V6.75a3.75 3.75 0 117.5 0z" clipRule="evenodd" />
-                                </svg>
-                            </div>
-
-                            <h1 className="mt-4 text-2xl font-semibold tracking-tight">Sign in</h1>
-                            <p className="text-slate-300 text-sm mt-1">Access your account with ease</p>
+                            <h1 className="mt-4 text-2xl font-semibold tracking-tight">
+                                Sign in
+                            </h1>
+                            <p className="text-slate-300 text-sm mt-1">
+                                Access your account with ease
+                            </p>
                         </header>
 
-                        {/* ✅ CORRIGÉ ICI */}
                         <form onSubmit={handleLogin}>
                             <div className="space-y-5">
 
@@ -96,7 +95,6 @@ function SignIn() {
                                         className="mt-1 w-full rounded-xl bg-white/5 text-slate-100 border border-white/10 px-4 py-3 pr-12 focus:ring-2 focus:ring-indigo-400"
                                     />
 
-                                    {/* ✅ CORRIGÉ : onClick ajouté */}
                                     <button
                                         type="button"
                                         onClick={handlePassword}
@@ -117,8 +115,11 @@ function SignIn() {
                                 </button>
 
                                 {error && (
-                                    <p className="text-red-500 text-sm text-center">{error}</p>
+                                    <p className="text-red-500 text-sm text-center">
+                                        {error}
+                                    </p>
                                 )}
+
                             </div>
                         </form>
 

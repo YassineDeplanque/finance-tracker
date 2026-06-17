@@ -1,14 +1,10 @@
-import axios from 'axios';
 import { useState, useEffect } from "react";
-
-axios.defaults.withCredentials = true;
+import api from "../api/axios";
 
 function Transactions() {
 
   const [income, setIncome] = useState([]);
-  const [incomeAmount, setIncomeAmount] = useState(0);
   const [expenses, setExpenses] = useState([]);
-  const [expensesAmount, setExpensesAmount] = useState(0);
   const [error, setError] = useState('');
 
   const [incomeAmountAdd, setIncomeAmountAdd] = useState('');
@@ -35,160 +31,158 @@ function Transactions() {
   const [totalExpenses, setTotalExpenses] = useState(0);
 
   const categories = [
-  "Housing",
-  "Groceries",
-  "Dining",
-  "Transport",
-  "Shopping",
-  "Entertainment",
-  "Health",
-  "Education",
-  "Bills & Utilities",
-  "Travel",
-  "Subscriptions",
-  "Other"
-];
+    "Housing", "Groceries", "Dining", "Transport", "Shopping",
+    "Entertainment", "Health", "Education", "Bills & Utilities",
+    "Travel", "Subscriptions", "Other"
+  ];
 
-  // ====== Fetch Income ======
+  // ====== FETCH ======
   const fetchIncome = () => {
-    axios.get(`http://localhost:3000/transaction/income${intervalIncome}`, { withCredentials: true })
-      .then((res) => {
-        setIncome(res.data);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    api.get(`/transaction/income${intervalIncome}`)
+      .then(res => setIncome(res.data))
+      .catch(err => setError(err.message));
   };
 
   const fetchExpenses = () => {
-    axios.get(`http://localhost:3000/transaction/expenses${intervalExpenses}`, { withCredentials: true })
-      .then((res) => {
-        setExpenses(res.data);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    api.get(`/transaction/expenses${intervalExpenses}`)
+      .then(res => setExpenses(res.data))
+      .catch(err => setError(err.message));
   };
 
   const fetchTotalIncome = () => {
-    axios.get(`http://localhost:3000/transaction/income/sum${intervalIncome}`, { withCredentials: true })
-      .then((res) => {
-        setTotalIncome(res.data.total ?? 0);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    api.get(`/transaction/income/sum${intervalIncome}`)
+      .then(res => setTotalIncome(res.data.total ?? 0))
+      .catch(err => setError(err.message));
   };
 
   const fetchTotalExpenses = () => {
-    axios.get(`http://localhost:3000/transaction/expenses/sum${intervalExpenses}`, { withCredentials: true })
-      .then((res) => {
-        setTotalExpenses(res.data.total ?? 0);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    api.get(`/transaction/expenses/sum${intervalExpenses}`)
+      .then(res => setTotalExpenses(res.data.total ?? 0))
+      .catch(err => setError(err.message));
   };
 
-  // ====== useEffect ======
-  useEffect(() => { fetchIncome(); fetchTotalIncome(); }, [intervalIncome]);
-  useEffect(() => { fetchExpenses(); fetchTotalExpenses(); }, [intervalExpenses]);
+  useEffect(() => {
+    fetchIncome();
+    fetchTotalIncome();
+  }, [intervalIncome]);
 
-  // useEffect(() => { fetchIncome(); fetchTotalIncome(); }, [totalIncome]);
-  // useEffect(() => { fetchExpenses(); fetchTotalExpenses(); }, [totalExpenses]);
+  useEffect(() => {
+    fetchExpenses();
+    fetchTotalExpenses();
+  }, [intervalExpenses]);
 
-  // ====== Add Income ======
+  // ====== ADD ======
   const handleSubmitIncome = () => {
-    const newIncome = { amount: incomeAmountAdd, source: incomeSourceAdd, date: incomeDateAdd };
-    axios.post("http://localhost:3000/transaction/income", newIncome, { withCredentials: true })
-      .then(res => {
+    const newIncome = {
+      amount: incomeAmountAdd,
+      source: incomeSourceAdd,
+      date: incomeDateAdd
+    };
+
+    api.post("/transaction/income", newIncome)
+      .then(() => {
         fetchIncome();
+        fetchTotalIncome();
         setIncomeAmountAdd('');
         setIncomeSourceAdd('');
         setIncomeDateAdd('');
-        fetchTotalIncome();
       })
-      .catch((err) => setError(err.message));
-  }
+      .catch(err => setError(err.message));
+  };
 
-  // ====== Add Expenses ======
   const handleSubmitExpenses = () => {
-    const newExpenses = { amount: expensesAmountAdd, category: expensesCategoryAdd, date: expensesDateAdd };
-    axios.post("http://localhost:3000/transaction/expenses", newExpenses, { withCredentials: true })
-      .then(res => {
+    const newExpenses = {
+      amount: expensesAmountAdd,
+      category: expensesCategoryAdd,
+      date: expensesDateAdd
+    };
+
+    api.post("/transaction/expenses", newExpenses)
+      .then(() => {
         fetchExpenses();
+        fetchTotalExpenses();
         setExpensesAmountAdd('');
         setExpensesCategopryAdd('');
         setExpensesDateAdd('');
-        fetchTotalExpenses();
       })
-      .catch((err) => setError(err.message));
-  }
+      .catch(err => setError(err.message));
+  };
 
-  // ====== Delete Income ======
+  // ====== DELETE ======
   const handleDeleteIncome = (id) => {
-    axios.delete(`http://localhost:3000/transaction/income/${id}`, { withCredentials: true })
-      .then((res) => {
+    api.delete(`/transaction/income/${id}`)
+      .then(() => {
         setIncome(income.filter(i => i.id !== id));
-        fetchTotalExpenses();
-        fetchTotalExpenses();
+        fetchTotalIncome();
       })
-      .catch((err) => setError(err.message));
-  }
+      .catch(err => setError(err.message));
+  };
 
-  // ====== Delete Expenses ======
   const handleDeleteExpenses = (id) => {
-    axios.delete(`http://localhost:3000/transaction/expenses/${id}`, { withCredentials: true })
-      .then((res) => {
+    api.delete(`/transaction/expenses/${id}`)
+      .then(() => {
         setExpenses(expenses.filter(ex => ex.id !== id));
         fetchTotalExpenses();
-        fetchTotalExpenses();
       })
-      .catch((err) => setError(err.message));
-  }
+      .catch(err => setError(err.message));
+  };
 
-  // ====== Edit Income ======
+  // ====== EDIT INCOME ======
   const startEditingIncome = (incomes) => {
     setEditingIncomeId(incomes.id);
     setEditingIncomeAmount(incomes.amount);
     setEditingIncomeSource(incomes.source);
+
     const d = new Date(incomes.date);
-    setEditingIncomeDate(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
-  }
+    setEditingIncomeDate(
+      `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+    );
+  };
 
   const handleEditIncome = (id) => {
-    const editIncome = { amount: editingIncomeAmount, source: editingIncomeSource, date: editingIncomeDate };
-    axios.put(`http://localhost:3000/transaction/income/${id}`, editIncome, { withCredentials: true })
-      .then(res => {
+    const editIncome = {
+      amount: editingIncomeAmount,
+      source: editingIncomeSource,
+      date: editingIncomeDate
+    };
+
+    api.put(`/transaction/income/${id}`, editIncome)
+      .then(() => {
         fetchIncome();
+        fetchTotalIncome();
         setEditingIncomeId(null);
-        fetchTotalExpenses();
-        fetchTotalExpenses();
       })
       .catch(err => setError(err.message));
-  }
+  };
 
-  // ====== Edit Expenses ======
+  // ====== EDIT EXPENSES ======
   const startEditingExpenses = (expense) => {
     setEditingExpensesId(expense.id);
     setEditingExpensesAmount(expense.amount);
     setEditingExpensesCategory(expense.category);
+
     const d = new Date(expense.date);
-    setEditingExpensesDate(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
-  }
+    setEditingExpensesDate(
+      `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+    );
+  };
 
   const handleEditExpenses = (id) => {
-    const editExpenses = { amount: editingExpensesAmount, category: editingExpensesCategory, date: editingExpensesDate };
-    axios.put(`http://localhost:3000/transaction/expenses/${id}`, editExpenses, { withCredentials: true })
-      .then(res => {
+    const editExpenses = {
+      amount: editingExpensesAmount,
+      category: editingExpensesCategory,
+      date: editingExpensesDate
+    };
+
+    api.put(`/transaction/expenses/${id}`, editExpenses)
+      .then(() => {
         fetchExpenses();
+        fetchTotalExpenses();
         setEditingExpensesId(null);
-        fetchTotalExpenses();
-        fetchTotalExpenses();
       })
       .catch(err => setError(err.message));
-  }
-
+  };
+  
 return (
   <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 antialiased p-6">
     <div className="max-w-5xl mx-auto space-y-10">
