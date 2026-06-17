@@ -148,20 +148,36 @@ function SignUp() {
 
             {/* POPUP */}
             {showPopup && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                    <div className="bg-gray-900 p-6 rounded-lg">
-                        <p>Account created!</p>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-gray-900 text-white p-6 rounded-xl shadow-2xl max-w-sm w-full border border-white/10">
+            
+            <h2 className="text-xl font-semibold mb-2">
+                Account created 🎉
+            </h2>
 
-                        <button onClick={() => setShowPopup(false)}>
-                            Close
-                        </button>
+            <p className="text-slate-300 mb-6">
+                Your account has been successfully created.
+            </p>
 
-                        <button onClick={() => navigate('/signin')}>
-                            Sign In
-                        </button>
-                    </div>
-                </div>
-            )}
+            <div className="flex gap-3 justify-end">
+                <button
+                    onClick={() => setShowPopup(false)}
+                    className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition"
+                >
+                    Close
+                </button>
+
+                <button
+                    onClick={() => navigate('/signin')}
+                    className="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-400 transition"
+                >
+                    Sign In
+                </button>
+            </div>
+
+        </div>
+    </div>
+)}
         </div>
     );
 }
