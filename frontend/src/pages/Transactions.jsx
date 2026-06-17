@@ -34,7 +34,20 @@ function Transactions() {
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
 
-  const categories = ["Food", "Transport", "Rent", "Shopping", "Restaurant", "Outing", "Other"];
+  const categories = [
+  "Housing",
+  "Groceries",
+  "Dining",
+  "Transport",
+  "Shopping",
+  "Entertainment",
+  "Health",
+  "Education",
+  "Bills & Utilities",
+  "Travel",
+  "Subscriptions",
+  "Other"
+];
 
   // ====== Fetch Income ======
   const fetchIncome = () => {
