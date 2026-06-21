@@ -18,7 +18,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(express.json())
+app.use(express.json());
 
 app.use(session({
     secret: process.env.SESSION_SECRET || "dev-secret-key",
@@ -32,10 +32,17 @@ app.use(session({
     }
 }));
 
+/* debugging temporaire */
+app.get("/debug", (req, res) => {
+    res.json({
+        session: req.session,
+        cookie: req.headers.cookie || null
+    });
+});
 
 app.use('/transaction', transactionRoutes);
 app.use('/user', userRoutes);
 
 app.listen(port, () => {
     console.log("Server running on port ", port);
-})
+});
