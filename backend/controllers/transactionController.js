@@ -5,7 +5,7 @@ import { pool } from "../config/db.js";
 export const getIncome = async (req, res) => {
     try {
         const query = 'SELECT * FROM income WHERE user_id = ? ORDER BY date DESC';
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result);
     } catch (err) {
@@ -17,7 +17,7 @@ export const getIncome = async (req, res) => {
 export const getSumIncome = async (req, res) => {
     try {
         const query = 'SELECT SUM(amount) AS total FROM income WHERE user_id = ?';
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result[0]);
     } catch (err) {
@@ -36,7 +36,7 @@ export const getIncomeMonth = async (req, res) => {
             ORDER BY date DESC
         `;
 
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result);
     } catch (err) {
@@ -54,7 +54,7 @@ export const getSumIncomeMonth = async (req, res) => {
             AND MONTH(date) = MONTH(CURDATE())
         `;
 
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result[0]);
     } catch (err) {
@@ -72,7 +72,7 @@ export const getIncomeThreeMonths = async (req, res) => {
             ORDER BY date DESC
         `;
 
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result);
     } catch (err) {
@@ -89,7 +89,7 @@ export const getSumIncomeThreeMonths = async (req, res) => {
             AND DATE_FORMAT(date, '%Y-%m') >= DATE_FORMAT(CURDATE() - INTERVAL 2 MONTH, '%Y-%m')
         `;
 
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result[0]);
     } catch (err) {
@@ -100,7 +100,7 @@ export const getSumIncomeThreeMonths = async (req, res) => {
 
 export const insertIncome = async (req, res) => {
     const { amount, source, date } = req.body;
-    const userId = req.session.userId;
+    const userId = req.user.userId;
 
     if (!userId) {
         return res.status(401).json({ success: false, message: "Unauthorized" });
@@ -140,7 +140,7 @@ export const editIncome = async (req, res) => {
             WHERE id = ? AND user_id = ?
         `;
 
-        await pool.execute(query, [amount, source, date, id, req.session.userId]);
+        await pool.execute(query, [amount, source, date, id, req.user.userId]);
 
         return res.status(200).json({ success: true, message: "Income updated" });
     } catch (err) {
@@ -154,7 +154,7 @@ export const deleteIncome = async (req, res) => {
 
     try {
         const query = 'DELETE FROM income WHERE id = ? AND user_id = ?';
-        await pool.execute(query, [id, req.session.userId]);
+        await pool.execute(query, [id, req.user.userId]);
 
         return res.status(200).json({ success: true, message: "Income deleted" });
     } catch (err) {
@@ -168,7 +168,7 @@ export const deleteIncome = async (req, res) => {
 export const getExpenses = async (req, res) => {
     try {
         const query = 'SELECT * FROM expenses WHERE user_id = ? ORDER BY date DESC';
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result);
     } catch (err) {
@@ -180,7 +180,7 @@ export const getExpenses = async (req, res) => {
 export const getSumExpenses = async (req, res) => {
     try {
         const query = 'SELECT SUM(amount) AS total FROM expenses WHERE user_id = ?';
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result[0]);
     } catch (err) {
@@ -199,7 +199,7 @@ export const getExpensesMonth = async (req, res) => {
             ORDER BY date DESC
         `;
 
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result);
     } catch (err) {
@@ -217,7 +217,7 @@ export const getSumExpensesMonth = async (req, res) => {
             AND MONTH(date) = MONTH(CURDATE())
         `;
 
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result[0]);
     } catch (err) {
@@ -235,7 +235,7 @@ export const getExpensesThreeMonths = async (req, res) => {
             ORDER BY date DESC
         `;
 
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result);
     } catch (err) {
@@ -252,7 +252,7 @@ export const getSumExpensesThreeMonths = async (req, res) => {
             AND DATE_FORMAT(date, '%Y-%m') >= DATE_FORMAT(CURDATE() - INTERVAL 2 MONTH, '%Y-%m')
         `;
 
-        const [result] = await pool.execute(query, [req.session.userId]);
+        const [result] = await pool.execute(query, [req.user.userId]);
 
         return res.status(200).json(result[0]);
     } catch (err) {
@@ -263,7 +263,7 @@ export const getSumExpensesThreeMonths = async (req, res) => {
 
 export const insertExpenses = async (req, res) => {
     const { amount, category, date } = req.body;
-    const userId = req.session.userId;
+    const userId = req.user.userId;
 
     if (!userId) {
         return res.status(401).json({ success: false, message: "Unauthorized" });
@@ -303,7 +303,7 @@ export const editExpenses = async (req, res) => {
             WHERE id = ? AND user_id = ?
         `;
 
-        await pool.execute(query, [amount, category, date, id, req.session.userId]);
+        await pool.execute(query, [amount, category, date, id, req.user.userId]);
 
         return res.status(200).json({ success: true, message: "Expense updated" });
     } catch (err) {
@@ -317,7 +317,7 @@ export const deleteExpenses = async (req, res) => {
 
     try {
         const query = 'DELETE FROM expenses WHERE id = ? AND user_id = ?';
-        await pool.execute(query, [id, req.session.userId]);
+        await pool.execute(query, [id, req.user.userId]);
 
         return res.status(200).json({ success: true, message: "Expense deleted" });
     } catch (err) {

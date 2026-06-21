@@ -15,31 +15,40 @@ function SignIn() {
     const [error, setError] = useState("");
 
     const handleLogin = async (event) => {
-        event.preventDefault();
+    event.preventDefault();
 
-        if (!email || !password) {
-            setError("All fields must be filled.");
-            return;
+    if (!email || !password) {
+        setError("All fields must be filled.");
+        return;
+    }
+
+    try {
+        const newLogin = { email, password };
+
+        const res = await api.post("/user/login", newLogin);
+
+        const token = res.data.token;
+
+        if (!token) {
+            throw new Error("No token received");
         }
 
-        try {
-            const newLogin = { email, password };
+        localStorage.setItem("token", token);
 
-            const res = await api.post("/user/login", newLogin);
+        const loggedUser = res.data.user || { email };
 
-            const loggedUser = res.data.user || { email: email };
+        setUser(loggedUser);
 
-            setUser(loggedUser);
+        setEmail("");
+        setPassword("");
 
-            setEmail("");
-            setPassword("");
+        navigate('/homeco');
 
-            navigate('/homeco');
-        } catch (err) {
-            console.error(err);
-            setError("Email or password wrong.");
-        }
-    };
+    } catch (err) {
+        console.error(err);
+        setError("Email or password wrong.");
+    }
+};
 
     const handlePassword = () => {
         if (inputType === "password") {

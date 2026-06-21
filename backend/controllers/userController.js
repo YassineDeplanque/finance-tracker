@@ -1,5 +1,6 @@
 import { pool } from "../config/db.js";
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 
 // ====================== REGISTER ======================
 
@@ -43,7 +44,7 @@ export const insertUser = async (req, res) => {
     }
 };
 
-// ====================== LOGIN ======================
+// ====================== LOGIN (JWT VERSION) ======================
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
@@ -77,12 +78,19 @@ export const login = async (req, res) => {
             });
         }
 
-        req.session.userId = user.id;
-        req.session.userEmail = user.email;
+        const token = jwt.sign(
+            {
+                userId: user.id,
+                email: user.email
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        );
 
         return res.status(200).json({
             success: true,
             message: "User logged in",
+            token,
             user: {
                 id: user.id,
                 name: user.name,
@@ -101,22 +109,11 @@ export const login = async (req, res) => {
     }
 };
 
-// ====================== LOGOUT ======================
+// ====================== LOGOUT (JWT VERSION) ======================
 
 export const logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                message: "Logout failed"
-            });
-        }
-
-        res.clearCookie("connect.sid");
-
-        return res.status(200).json({
-            success: true,
-            message: "Logged out"
-        });
+    return res.status(200).json({
+        success: true,
+        message: "Logged out"
     });
 };

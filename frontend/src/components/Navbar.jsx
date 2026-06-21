@@ -1,20 +1,16 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import api from '../api/axios';
 import logo from '../assets/logo.png';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const destroySession = async (e) => {
+  const destroySession = (e) => {
     e.preventDefault();
 
-    try {
-      await api.post("/user/logout");
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
+    // 🔥 JWT logout = suppression du token local
+    localStorage.removeItem("token");
 
     navigate("/");
   };
@@ -40,7 +36,6 @@ function Navbar() {
           <span className="sr-only">Open main menu</span>
           <svg
             className="w-5 h-5"
-            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 17 14"
