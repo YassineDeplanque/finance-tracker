@@ -25,7 +25,6 @@ function SignIn() {
         try {
             const newLogin = { email, password };
 
-            // ✅ CHANGÉ ICI
             const res = await api.post("/user/login", newLogin);
 
             const loggedUser = res.data.user || { email: email };
