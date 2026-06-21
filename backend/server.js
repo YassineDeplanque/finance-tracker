@@ -20,6 +20,13 @@ app.use(cors({
 
 app.use(express.json());
 
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "ok",
+        time: new Date().toISOString()
+    });
+});
+
 app.use(session({
     secret: process.env.SESSION_SECRET || "dev-secret-key",
     resave: false,
