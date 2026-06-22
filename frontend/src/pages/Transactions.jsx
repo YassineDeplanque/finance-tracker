@@ -378,10 +378,12 @@ function Transactions() {
             <input className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100"
               value={incomeAmountAdd}
               onChange={(e) => setIncomeAmountAdd(e.target.value)}
+              placeholder="Amount"
             />
             <input className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100"
               value={incomeSourceAdd}
               onChange={(e) => setIncomeSourceAdd(e.target.value)}
+              placeholder="Source"
             />
             <input type="date" className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100"
               value={incomeDateAdd}
@@ -402,6 +404,7 @@ function Transactions() {
             <input className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100"
               value={expensesAmountAdd}
               onChange={(e) => setExpensesAmountAdd(e.target.value)}
+              placeholder="Amount"
             />
             <select className="flex-1 border border-slate-600 rounded-md p-2 bg-slate-900/70 text-slate-100"
               value={expensesCategoryAdd}
