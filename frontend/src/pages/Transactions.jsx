@@ -126,7 +126,7 @@ function Transactions() {
 
   const startEditingIncome = (incomes) => {
     setEditingIncomeId(incomes.id);
-    setEditingIncomeAmount(incomes.amount);
+    setEditingIncomeAmount(String(incomes.amount));
     setEditingIncomeSource(incomes.source);
 
     const d = new Date(incomes.date);
@@ -153,7 +153,7 @@ function Transactions() {
 
   const startEditingExpenses = (expense) => {
     setEditingExpensesId(expense.id);
-    setEditingExpensesAmount(expense.amount);
+    setEditingExpensesAmount(String(expense.amount));
     setEditingExpensesCategory(expense.category);
 
     const d = new Date(expense.date);
