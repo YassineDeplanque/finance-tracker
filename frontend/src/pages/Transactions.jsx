@@ -212,7 +212,7 @@ return (
               className="flex justify-between items-center bg-slate-900/60 shadow rounded-lg p-3 border border-slate-700"
             >
               <span className="text-slate-200">
-                {i.amount} € — {i.source} — {new Date(i.date).toLocaleDateString()}
+                {i.amount.toFixed(2)} € — {i.source} — {new Date(i.date).toLocaleDateString()}
               </span>
               {editingIncomeId === i.id ? (
                 <div className="flex gap-2 flex-wrap">
@@ -291,7 +291,7 @@ return (
               className="flex justify-between items-center bg-slate-900/60 shadow rounded-lg p-3 border border-slate-700"
             >
               <span className="text-slate-200">
-                {ex.amount} € — {ex.category} — {new Date(ex.date).toLocaleDateString()}
+                {ex.amount.toFixed(2)} € — {ex.category} — {new Date(ex.date).toLocaleDateString()}
               </span>
               {editingExpensesId === ex.id ? (
                 <div className="flex gap-2 flex-wrap">
