@@ -330,12 +330,12 @@ function Transactions() {
                   <div className="flex flex-col md:flex-row gap-2 w-full">
                     <input
                       className="w-full md:flex-1 border border-slate-600 rounded-md p-2 bg-slate-800"
-                      value={editingExpensesAmount.toFixed(2)}
+                      value={editingExpensesAmount}
                       onChange={(e) => setEditingExpensesAmount(e.target.value)}
                     />
                     <select
                       className="w-full md:flex-1 border border-slate-600 rounded-md p-2 bg-slate-800"
-                      value={editingExpensesCategory.toFixed(2)}
+                      value={editingExpensesCategory}
                       onChange={(e) => setEditingExpensesCategory(e.target.value)}
                     >
                       <option value="">-- Choose a category --</option>
