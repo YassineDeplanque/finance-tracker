@@ -198,7 +198,7 @@ function Transactions() {
             </select>
 
             <div className="text-slate-200 font-semibold">
-              Total: <span className="text-blue-400">{totalIncome}</span> €
+              Total: <span className="text-blue-400">{totalIncome.toFixed(2)}</span> €
             </div>
           </div>
 
@@ -290,7 +290,7 @@ function Transactions() {
             </select>
 
             <div className="text-slate-200 font-semibold">
-              Total: <span className="text-blue-400">{totalExpenses}</span> €
+              Total: <span className="text-blue-400">{totalExpenses.toFixed(2)}</span> €
             </div>
           </div>
 
