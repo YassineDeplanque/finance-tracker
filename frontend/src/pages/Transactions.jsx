@@ -248,7 +248,7 @@ function Transactions() {
                     />
                     <input
                       type="date"
-                      className="w-full md:flex-1 border border-slate-600 rounded-md p-2 bg-slate-800"
+                      className="w-full md:flex-1 min-w-0 border border-slate-600 rounded-md p-2 bg-slate-800"
                       value={editingIncomeDate || ""}
                       onChange={(e) => setEditingIncomeDate(e.target.value)}
                     />
@@ -345,7 +345,7 @@ function Transactions() {
                     </select>
                     <input
                       type="date"
-                      className="w-full md:flex-1 border border-slate-600 rounded-md p-2 bg-slate-800"
+                      className="w-full md:flex-1 min-w-0 border border-slate-600 rounded-md p-2 bg-slate-800"
                       value={editingExpensesDate || ""}
                       onChange={(e) => setEditingExpensesDate(e.target.value)}
                     />
